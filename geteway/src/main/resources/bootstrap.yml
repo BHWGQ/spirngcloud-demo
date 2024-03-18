@@ -1,0 +1,21 @@
+server:
+  port: 8050
+  servlet:
+    context-path: /travel
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    nacos:
+      username: ${nacos.username}
+      password: ${nacos.password}
+      server-addr: ${nacos.server-addr}
+      config:
+        shared-configs:
+          - data-id: gateway.properties
+            group: DEFAULT_GROUP
+            refresh: true
+#  spring.cloud.nacos.config.shared-configs[0].data-id=mysql.yml
+#  spring.cloud.nacos.config.shared-configs[0].group=DEFAULT_GROUP
+#  spring.cloud.nacos.config.shared-configs[0].refresh=true
+

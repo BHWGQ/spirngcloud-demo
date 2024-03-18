@@ -1,0 +1,9 @@
+# 项目排除路径
+/be-attractions/target/
+/be-comment/target/
+/be-hotel/target/
+/be-portal/target/
+/be-recommend-food/target/
+/be-weather/target/
+/common/target/
+/geteway/target/
