@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.food.controller;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.model.dto.resp.FoodRecommendResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.FoodRecommendThreeResp;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,5 +60,20 @@ public class RecommendFoodController {
         RestIntriduceResp resp = new RestIntriduceResp(pictureUrl,recommendFoodTable.getRestName(),recommendFoodTable.getSpecificAddress(),recommendFoodTable.getIntroduce(),recommendFoodTable.getRecommendFood(),recommendFoodTable.getPerPrice(),recommendFoodTable.getPhoneNumber(),recommendFoodTable.getRestId());
         return Result.success(resp);
     }
-    
+
+    //TODO/新增一个通过restId查询addressId，然后返回最多三个的当地餐厅
+    @GetMapping("/QueryByRestId")
+    public Result<List<FoodRecommendThreeResp>> result (@Valid @RequestParam("restId") @NotNull Integer restId){
+        List<FoodRecommendResp> foodRecommendResps = recommendFoodTableService.getThreeByRestId(restId);
+        List<FoodRecommendThreeResp> resps = new ArrayList<>();
+        for (FoodRecommendResp item : foodRecommendResps){
+            if (restId.equals(item.getRestId())){
+                continue;
+            }
+            String pictureUrl = recommendFoodPictureService.getPicture(item.getRestId());
+            FoodRecommendThreeResp foodRecommendThreeResp = new FoodRecommendThreeResp(pictureUrl,item.getAddressId(),item.getRestName(),item.getRecommendFood(),item.getRestId());
+            resps.add(foodRecommendThreeResp);
+        }
+        return Result.success(resps);
+    }
 }

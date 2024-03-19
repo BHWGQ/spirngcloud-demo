@@ -19,5 +19,7 @@ public interface RecommendFoodTableService extends IService<RecommendFoodTable> 
     List<FoodRecommendResp> getThreeresp();
 
     RecommendFoodTable getByRestId(Integer restId);
+
+    List<FoodRecommendResp> getThreeByRestId(Integer restId);
 }
 

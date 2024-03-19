@@ -65,5 +65,26 @@ public class RecommendFoodTableServiceImpl extends ServiceImpl<RecommendFoodTabl
         }
         return recommendFoodTable;
     }
+
+    @Override
+    public List<FoodRecommendResp> getThreeByRestId(Integer restId) {
+        LambdaQueryWrapper<RecommendFoodTable> wrapper = new QueryWrapper<RecommendFoodTable>().lambda()
+                .eq(RecommendFoodTable::getRestId,restId);
+        RecommendFoodTable recommendFoodTable = recommendFoodTableMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(recommendFoodTable)){
+            throw RestException.Query_Error;
+        }
+        Integer addressId = recommendFoodTable.getAddressId();
+        List<RecommendFoodTable> recommendFoodTable1 = recommendFoodTableMapper.selectRandomRest(addressId);
+        if (ObjectUtil.isEmpty(recommendFoodTable1)){
+            throw RestException.Add_No_Rest;
+        }
+        List<FoodRecommendResp> foodRecommendResps1 = new ArrayList<>();
+        for (RecommendFoodTable item : recommendFoodTable1){
+            FoodRecommendResp foodRecommendResp = new FoodRecommendResp(item.getAddressId(),item.getRestName(),item.getRecommendFood(),item.getRestId());
+            foodRecommendResps1.add(foodRecommendResp);
+        }
+        return foodRecommendResps1;
+    }
 }
 
