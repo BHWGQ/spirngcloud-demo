@@ -8,10 +8,8 @@ import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.feign.CommentFeignClient;
 import io.gitee.kewen.yuce.common.feign.HotelFeignClient;
 import io.gitee.kewen.yuce.common.feign.RestFoodFeignClient;
-import io.gitee.kewen.yuce.common.model.dto.resp.AttQueryByAttNameResp;
-import io.gitee.kewen.yuce.common.model.dto.resp.ClickPageResp;
-import io.gitee.kewen.yuce.common.model.dto.resp.FoodRecommendThreeResp;
-import io.gitee.kewen.yuce.common.model.dto.resp.HotelRecommendThreeResp;
+import io.gitee.kewen.yuce.common.feign.WeatherFeignClient;
+import io.gitee.kewen.yuce.common.model.dto.resp.*;
 import io.gitee.kewen.yuce.common.model.entity.AttPicture;
 import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
 import io.gitee.kewen.yuce.common.model.entity.CommentTable;
@@ -43,6 +41,9 @@ public class AttController {
     @Resource
     private RestFoodFeignClient restFoodFeignClient;
 
+    @Resource
+    private WeatherFeignClient weatherFeignClient;
+
     @GetMapping("/homePageQuery")
     public Result<List<AttHomePageQueryResp>> queryRespResult (){
         List<AttHomePageQueryTen> attHomePageQueryTens = attTableSingleService.queryTenInfo();
@@ -61,10 +62,12 @@ public class AttController {
         if (ObjectUtil.isEmpty(attTableSingle)){
             throw QueryException.Data_Not_Exist;
         }
+        String picture = attPictureService.getByAttId(attTableSingle.getId());
         Result<List<CommentTable>> listResult = commentFeignClient.commentTableResult(attTableSingle.getId());
         Result<List<HotelRecommendThreeResp>> listResult1 = hotelFeignClient.threeRespResult(attTableSingle.getAddressId());
         Result<List<FoodRecommendThreeResp>> listResult2 = restFoodFeignClient.foodRecommendThreeRespResult(attTableSingle.getAddressId());
-        ClickPageResp clickPageResp = new ClickPageResp(attTableSingle,listResult.getData(),listResult1.getData(),listResult2.getData());
+        Result<WeatherResponse> listResult3 = weatherFeignClient.weatherResponseResult(attTableSingle.getAttAddress());
+        ClickPageResp clickPageResp = new ClickPageResp(attTableSingle,listResult.getData(),listResult1.getData(),listResult2.getData(),picture,listResult3.getData());
         return Result.success(clickPageResp);
     }
 

@@ -26,7 +26,7 @@ public class WeatherQueryController {
     private final Gson gson = new Gson();
 
     @GetMapping("/Query")
-    public Result<WeatherResponse> weatherResponseResult (@RequestParam("cityName") String cityName) throws IOException {
+    public Result<WeatherResponse> weatherResponseResult (@RequestParam("cityName") String cityName){
         String url = weatherCityCodeService.getWeatherUrl(cityName);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(url);

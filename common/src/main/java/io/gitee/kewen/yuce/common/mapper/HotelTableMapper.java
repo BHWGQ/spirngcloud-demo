@@ -19,5 +19,8 @@ import java.util.List;
 public interface HotelTableMapper extends BaseMapper<HotelTable> {
     @Select("SELECT * FROM hotel_table WHERE address_id = #{addressId} ORDER BY RAND() LIMIT 3")
     List<HotelTable> selectRandomHotels(@Param("addressId") Integer addressId);
+
+    @Select("SELECT * FROM hotel_table WHERE address_id = #{addressId} AND hotel_id != #{hotelId} ORDER BY RAND() LIMIT 3")
+    List<HotelTable> selectExceptSelf(@Param("addressId") Integer addressId, @Param("hotelId") Integer hotelId);
 }
 

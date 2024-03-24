@@ -15,5 +15,9 @@ import java.util.List;
 public interface HotelTableService extends IService<HotelTable> {
 
     List<HotelRecommendResp> getThree(Integer addressId);
+
+    HotelTable getByHotelId(Integer hotelId);
+
+    List<HotelTable> getListByHotelId(Integer hotelId);
 }
 

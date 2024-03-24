@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.common.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -39,6 +40,33 @@ public class HotelTableServiceImpl extends ServiceImpl<HotelTableMapper, HotelTa
             hotelRecommendResps.add(hotelRecommendResp);
         }
         return hotelRecommendResps;
+    }
+
+    @Override
+    public HotelTable getByHotelId(Integer hotelId) {
+        LambdaQueryWrapper<HotelTable> hotelTableLambdaQueryWrapper = new QueryWrapper<HotelTable>().lambda()
+                .eq(HotelTable::getHotelId,hotelId);
+        HotelTable hotelTable = hotelTableMapper.selectOne(hotelTableLambdaQueryWrapper);
+        if (ObjectUtil.isNull(hotelTable)){
+            throw HotelException.Add_No_Hotel_;
+        }
+        return hotelTable;
+    }
+
+    @Override
+    public List<HotelTable> getListByHotelId(Integer hotelId) {
+        LambdaQueryWrapper<HotelTable> wrapper = new QueryWrapper<HotelTable>().lambda()
+                .eq(HotelTable::getHotelId,hotelId);
+        HotelTable hotelTable = hotelTableMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(hotelTable)){
+            throw HotelException.Add_No_Hotel_;
+        }
+        Integer addressId = hotelTable.getAddressId();
+        List<HotelTable> list = hotelTableMapper.selectExceptSelf(addressId,hotelId);
+        if (CollectionUtil.isEmpty(list)){
+            throw HotelException.Add_Error_And_No_Hotel_;
+        }
+        return list;
     }
 }
 

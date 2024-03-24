@@ -19,4 +19,8 @@ public class ClickPageResp {
     private List<HotelRecommendThreeResp> hotelRecommendThreeResp;
 
     private List<FoodRecommendThreeResp> foodRecommendThreeResp;
+
+    private String picture;
+
+    private WeatherResponse weatherResponse;
 }

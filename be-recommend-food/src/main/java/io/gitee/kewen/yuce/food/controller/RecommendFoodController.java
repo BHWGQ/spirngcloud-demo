@@ -53,6 +53,7 @@ public class RecommendFoodController {
         return Result.success(food);
     }
 
+    //查询单个餐厅信息加上图片
     @GetMapping("/Query")
     public Result<RestIntriduceResp> restIntriduceRespResult (@RequestParam("restId") Integer restId){
         RecommendFoodTable recommendFoodTable = recommendFoodTableService.getByRestId(restId);
