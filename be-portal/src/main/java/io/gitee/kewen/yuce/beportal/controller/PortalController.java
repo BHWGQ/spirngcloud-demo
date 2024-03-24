@@ -6,10 +6,9 @@ import io.gitee.kewen.yuce.beportal.dto.resp.RegistResp;
 import io.gitee.kewen.yuce.beportal.dto.resp.SysLoginResp;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
 import io.gitee.kewen.yuce.common.bean.Result;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.gitee.kewen.yuce.common.model.dto.resp.TravelUserInfoResp;
+import io.gitee.kewen.yuce.common.model.entity.LoginTable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -31,5 +30,12 @@ public class PortalController {
     public Result<RegistResp> regist (@RequestBody @Valid RegistReq req){
         RegistResp registResp = service.regist(req);
         return Result.success(registResp);
+    }
+
+    @GetMapping("/userInfo")
+    public Result<TravelUserInfoResp> result (@RequestParam("userId") Long userId){
+        LoginTable loginTable = service.getUserById(userId);
+        TravelUserInfoResp travelUserInfoResp = new TravelUserInfoResp(loginTable.getUserName(),loginTable.getPicture());
+        return Result.success(travelUserInfoResp);
     }
 }

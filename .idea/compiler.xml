@@ -13,6 +13,7 @@
         <module name="be-attractions" />
         <module name="be-hotel" />
         <module name="be-recommend-food" />
+        <module name="be-travel" />
         <module name="geteway" />
       </profile>
     </annotationProcessing>

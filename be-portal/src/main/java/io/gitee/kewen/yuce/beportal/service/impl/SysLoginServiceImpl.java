@@ -101,6 +101,17 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         return new RegistResp(req.getUserName());
     }
 
+    @Override
+    public LoginTable getUserById(Long userId) {
+        LambdaQueryWrapper<LoginTable> lambdaQueryWrapper = new QueryWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,userId);
+        LoginTable loginTable = sysLoginMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtil.isNull(loginTable)){
+            throw new RuntimeException("数据库发生了错误");
+        }
+        return loginTable;
+    }
+
     private void insertUser(RegistReq req) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String picture = "http://s9tnzuteo.hd-bkt.clouddn.com/travel-plan-person-picture/base.png";

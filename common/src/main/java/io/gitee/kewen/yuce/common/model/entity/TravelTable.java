@@ -58,6 +58,8 @@ public class TravelTable implements Serializable {
     @TableField("travel_mouth")
     private Integer travelMouth;
 
+    @TableField("att_name")
+    private String attName;
 
 }
 

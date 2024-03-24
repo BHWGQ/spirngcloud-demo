@@ -17,6 +17,7 @@
         <module>be-recommend-food</module>
         <module>be-comment</module>
         <module>be-weather</module>
+        <module>be-travel</module>
     </modules>
 
     <properties>

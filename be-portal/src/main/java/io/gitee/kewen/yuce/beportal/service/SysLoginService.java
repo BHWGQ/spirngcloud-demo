@@ -11,4 +11,6 @@ public interface SysLoginService extends IService<LoginTable> {
     SysLoginResp login(SysLoginReq req);
 
     RegistResp regist(RegistReq req);
+
+    LoginTable getUserById(Long userId);
 }
