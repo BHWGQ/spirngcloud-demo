@@ -61,5 +61,8 @@ public class TravelTable implements Serializable {
     @TableField("att_name")
     private String attName;
 
+    @TableField("address")
+    private String address;
+
 }
 

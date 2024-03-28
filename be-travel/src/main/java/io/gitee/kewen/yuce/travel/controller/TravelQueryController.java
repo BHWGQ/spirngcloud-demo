@@ -33,7 +33,7 @@ public class TravelQueryController {
         List<TravelQueryResp> travelQueryResps = new ArrayList<>();
         for (TravelTenInfoResp item : travelTables){
             Result<TravelUserInfoResp> travelUserInfoResp = portalClient.result(item.getUserId());
-            TravelQueryResp travelQueryResp = new TravelQueryResp(item.getId(),travelUserInfoResp.getData().getUserName(),item.getCreateTime(),item.getAttName(),item.getAttPicture(),travelUserInfoResp.getData().getUserPicture());
+            TravelQueryResp travelQueryResp = new TravelQueryResp(item.getId(),travelUserInfoResp.getData().getUserName(),item.getCreateTime(),item.getAttName(),item.getAttPicture(),travelUserInfoResp.getData().getUserPicture(),item.getAddress(),item.getIntroduce());
             travelQueryResps.add(travelQueryResp);
         }
         return Result.success(travelQueryResps);

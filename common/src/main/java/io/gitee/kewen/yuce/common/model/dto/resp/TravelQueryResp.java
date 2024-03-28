@@ -23,4 +23,8 @@ public class TravelQueryResp {
     private String attPicture;
 
     private String userPicture;
+
+    private String address;
+
+    private String intorduce;
 }

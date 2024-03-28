@@ -18,7 +18,7 @@ import java.util.List;
 @Mapper
 public interface TravelTableMapper extends BaseMapper<TravelTable> {
 
-    @Select("SELECT id, create_time, user_id ,att_picture, att_name FROM travel_table as t1 ORDER BY RAND() LIMIT 10")
+    @Select("SELECT id, create_time, user_id ,att_picture, att_name , introduce ,address FROM travel_table as t1 ORDER BY RAND() LIMIT 10")
     List<TravelTenInfoResp> selectTenList();
 }
 

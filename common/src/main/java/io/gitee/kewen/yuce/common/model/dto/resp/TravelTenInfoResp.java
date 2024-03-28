@@ -11,9 +11,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TravelTenInfoResp {
     private Integer id;
+
     private LocalDateTime createTime;
 
     private Long userId;
+
     private String attPicture;
+
     private String attName;
+
+    private String introduce;
+
+    private String address;
 }
