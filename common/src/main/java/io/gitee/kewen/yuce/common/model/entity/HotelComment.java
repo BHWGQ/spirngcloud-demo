@@ -15,26 +15,25 @@ import lombok.ToString;
 import lombok.EqualsAndHashCode;
 
 /**
- * (CommentTable)表实体类
+ * (HotelComment)表实体类
  *
  * @author makejava
- * @since 2024-03-05 11:42:50
+ * @since 2024-03-30 19:23:36
  */
 
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("comment_table")
-public class CommentTable implements Serializable {
+@TableName("hotel_comment")
+public class HotelComment implements Serializable {
 
-    private static final long serialVersionUID = 327018974581827141L;
-
+    private static final long serialVersionUID = -32426325697391066L;
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    @TableField("att_id")
-    private Integer attId;
+    @TableField("hotel_id")
+    private Integer hotelId;
 
     @TableField("user_name")
     private String userName;

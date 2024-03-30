@@ -1,8 +1,11 @@
 package io.gitee.kewen.yuce.travel.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import io.gitee.kewen.yuce.common.bean.Result;
+import io.gitee.kewen.yuce.common.exception.TravelException.TravelException;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelQueryResp;
+import io.gitee.kewen.yuce.common.model.dto.resp.TravelSingleInfoResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelTenInfoResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelUserInfoResp;
 import io.gitee.kewen.yuce.common.model.entity.TravelTable;
@@ -39,4 +42,14 @@ public class TravelQueryController {
         return Result.success(travelQueryResps);
     }
 
+    @GetMapping("/{id}")
+    public Result<TravelSingleInfoResp> travelSingleInfoRespResult (@PathVariable("id") Integer id){
+        TravelTable travelTable = travelTableService.getById(id);
+        if (ObjectUtil.isNull(travelTable)){
+            throw TravelException.Query_No_Exist;
+        }
+        Result<TravelUserInfoResp> travelUserInfoRespResult = portalClient.result(travelTable.getUserId());
+        TravelSingleInfoResp travelSingleInfoResp = new TravelSingleInfoResp(travelTable,travelUserInfoRespResult.getData().getUserName(),travelUserInfoRespResult.getData().getUserPicture());
+        return Result.success(travelSingleInfoResp);
+    }
 }

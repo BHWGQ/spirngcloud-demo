@@ -1,5 +1,7 @@
 package io.gitee.kewen.yuce.common.model.dto.resp;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.gitee.kewen.yuce.common.model.entity.TravelTable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,20 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TravelQueryResp {
-    private Integer id;
+public class TravelSingleInfoResp {
+    private TravelTable travelTable;
 
     private String userName;
 
-    private LocalDateTime createTime;
-
-    private String attName;
-
-    private String attPicture;
-
     private String userPicture;
-
-    private String address;
-
-    private String introduce;
 }
