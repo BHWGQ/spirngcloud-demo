@@ -1,6 +1,8 @@
 package io.gitee.kewen.yuce.common.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.kewen.yuce.common.model.dto.req.TravelCommentInsertReq;
+import io.gitee.kewen.yuce.common.model.dto.resp.CommentInsertResp;
 import io.gitee.kewen.yuce.common.model.entity.TravelComment;
 
 /**
@@ -11,5 +13,6 @@ import io.gitee.kewen.yuce.common.model.entity.TravelComment;
  */
 public interface TravelCommentService extends IService<TravelComment> {
 
+    CommentInsertResp insert(TravelCommentInsertReq req);
 }
 
