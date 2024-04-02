@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelTenInfoResp;
 import io.gitee.kewen.yuce.common.model.entity.TravelTable;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -20,5 +21,8 @@ public interface TravelTableMapper extends BaseMapper<TravelTable> {
 
     @Select("SELECT id, create_time, user_id ,att_picture, att_name , introduce ,address FROM travel_table as t1 ORDER BY RAND() LIMIT 10")
     List<TravelTenInfoResp> selectTenList();
+
+    @Select("SELECT id, create_time, user_id ,att_picture, att_name , introduce ,address FROM travel_table where id = #{id}")
+    TravelTenInfoResp selectById(@Param("id") Integer id);
 }
 

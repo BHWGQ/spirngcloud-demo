@@ -3,6 +3,8 @@ package io.gitee.kewen.yuce.common.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.gitee.kewen.yuce.common.model.entity.CollectTravelTable;
 
+import java.util.List;
+
 /**
  * (CollectTravelTable)表服务接口
  *
@@ -11,5 +13,6 @@ import io.gitee.kewen.yuce.common.model.entity.CollectTravelTable;
  */
 public interface CollectTravelTableService extends IService<CollectTravelTable> {
 
+    List<CollectTravelTable> getByUserId(Long userId);
 }
 
