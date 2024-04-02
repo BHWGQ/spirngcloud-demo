@@ -49,7 +49,7 @@ public class TravelCollectHobbyController {
         List<CollectTravelTable> collectTravelTables = collectTravelTableService.getByUserId(userId);
         List<TravelTenInfoResp> travelTenInfoResps = new ArrayList<>();
         for (CollectTravelTable item : collectTravelTables){
-            TravelTenInfoResp travelTenInfoResp = travelTableMapper.selectById(item.getTravelId());
+            TravelTenInfoResp travelTenInfoResp = travelTableMapper.selectByTravelId(item.getTravelId());
             travelTenInfoResps.add(travelTenInfoResp);
         }
         List<TravelQueryResp> travelQueryResps = new ArrayList<>();
@@ -66,7 +66,7 @@ public class TravelCollectHobbyController {
         List<HobbyTravelTable> hobbyTravelTables = hobbyTravelTableService.getByUserId(userId);
         List<TravelTenInfoResp> travelTenInfoResps = new ArrayList<>();
         for (HobbyTravelTable item : hobbyTravelTables){
-            TravelTenInfoResp travelTenInfoResp = travelTableMapper.selectById(item.getTravelId());
+            TravelTenInfoResp travelTenInfoResp = travelTableMapper.selectByTravelId(item.getTravelId());
             travelTenInfoResps.add(travelTenInfoResp);
         }
         List<TravelQueryResp> travelQueryResps = new ArrayList<>();

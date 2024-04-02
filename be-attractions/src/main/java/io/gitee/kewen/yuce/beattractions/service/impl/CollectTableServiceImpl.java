@@ -1,9 +1,12 @@
 package io.gitee.kewen.yuce.beattractions.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.gitee.kewen.yuce.beattractions.dto.req.AttCollectHobbyInsertReq;
+import io.gitee.kewen.yuce.beattractions.dto.resp.AttCollectHobbyResp;
 import io.gitee.kewen.yuce.beattractions.mapper.AttTableSingleMapper;
 import io.gitee.kewen.yuce.common.mapper.CollectTableMapper;
 import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
@@ -45,6 +48,41 @@ public class CollectTableServiceImpl extends ServiceImpl<CollectTableMapper, Col
             attTableSingles.add(attTableSingle);
         }
         return attTableSingles;
+    }
+
+    @Override
+    public AttCollectHobbyResp insertByReq(AttCollectHobbyInsertReq req) {
+        LambdaQueryWrapper<CollectTable> wrapper = new QueryWrapper<CollectTable>().lambda()
+                .eq(CollectTable::getUserId,req.getUserId())
+                .eq(CollectTable::getAttId,req.getAttId());
+        CollectTable collectTable = collectTableMapper.selectOne(wrapper);
+        if (!ObjectUtil.isNull(collectTable)){
+            throw new RuntimeException("您已收藏该景点,请勿重复收藏");
+        }
+        CollectTable collectTable1 = new CollectTable();
+        collectTable1.setUserId(req.getUserId());
+        collectTable1.setAttId(req.getAttId());
+        int affets = collectTableMapper.insert(collectTable1);
+        if (affets == 0){
+            throw new RuntimeException("收藏失败");
+        }
+        return new AttCollectHobbyResp(req.getUserId());
+    }
+
+    @Override
+    public AttCollectHobbyResp DeleteByReq(AttCollectHobbyInsertReq req) {
+        LambdaQueryWrapper<CollectTable> wrapper = new QueryWrapper<CollectTable>().lambda()
+                .eq(CollectTable::getUserId,req.getUserId())
+                .eq(CollectTable::getAttId,req.getAttId());
+        CollectTable collectTable = collectTableMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(collectTable)){
+            throw new RuntimeException("出错啦，没有找到需要删除收藏的景点信息");
+        }
+        int affets = collectTableMapper.delete(wrapper);
+        if (affets == 0){
+            throw new RuntimeException("删除失败");
+        }
+        return new AttCollectHobbyResp(req.getUserId());
     }
 }
 

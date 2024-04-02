@@ -23,6 +23,6 @@ public interface TravelTableMapper extends BaseMapper<TravelTable> {
     List<TravelTenInfoResp> selectTenList();
 
     @Select("SELECT id, create_time, user_id ,att_picture, att_name , introduce ,address FROM travel_table where id = #{id}")
-    TravelTenInfoResp selectById(@Param("id") Integer id);
+    TravelTenInfoResp selectByTravelId(@Param("id") Integer id);
 }
 

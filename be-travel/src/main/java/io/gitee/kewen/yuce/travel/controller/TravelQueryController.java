@@ -52,4 +52,5 @@ public class TravelQueryController {
         TravelSingleInfoResp travelSingleInfoResp = new TravelSingleInfoResp(travelTable,travelUserInfoRespResult.getData().getUserName(),travelUserInfoRespResult.getData().getUserPicture());
         return Result.success(travelSingleInfoResp);
     }
+
 }

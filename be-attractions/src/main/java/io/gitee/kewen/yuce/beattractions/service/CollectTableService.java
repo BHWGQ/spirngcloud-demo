@@ -1,6 +1,8 @@
 package io.gitee.kewen.yuce.beattractions.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.kewen.yuce.beattractions.dto.req.AttCollectHobbyInsertReq;
+import io.gitee.kewen.yuce.beattractions.dto.resp.AttCollectHobbyResp;
 import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
 import io.gitee.kewen.yuce.common.model.entity.CollectTable;
 
@@ -15,5 +17,9 @@ import java.util.List;
 public interface CollectTableService extends IService<CollectTable> {
 
     List<AttTableSingle> selectByUserId(Long userId);
+
+    AttCollectHobbyResp insertByReq(AttCollectHobbyInsertReq req);
+
+    AttCollectHobbyResp DeleteByReq(AttCollectHobbyInsertReq req);
 }
 
