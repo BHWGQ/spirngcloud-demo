@@ -47,4 +47,16 @@ public class AttCollectHobbyController {
         }
         return Result.success(attHomePageQueryResps);
      }
+
+    @GetMapping("/hobbyQuery")
+    public Result<List<AttHomePageQueryResp>> hobbyCollectList (@RequestParam("userId") Long userId){
+        List<AttTableSingle> attTableSingles = hobbyTableService.selectByUserId(userId);
+        List<AttHomePageQueryResp> attHomePageQueryResps = new ArrayList<>();
+        for (AttTableSingle item : attTableSingles){
+            String picture = attPictureService.getByAttId(item.getId());
+            AttHomePageQueryResp attHomePageQueryResp = new AttHomePageQueryResp(picture,item.getId(),item.getAttName(),item.getAttAddress(),item.getScore());
+            attHomePageQueryResps.add(attHomePageQueryResp);
+        }
+        return Result.success(attHomePageQueryResps);
+    }
 }

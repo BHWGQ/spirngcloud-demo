@@ -1,7 +1,10 @@
 package io.gitee.kewen.yuce.beattractions.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
 import io.gitee.kewen.yuce.common.model.entity.HobbyTable;
+
+import java.util.List;
 
 /**
  * (HobbyTable)表服务接口
@@ -11,5 +14,6 @@ import io.gitee.kewen.yuce.common.model.entity.HobbyTable;
  */
 public interface HobbyTableService extends IService<HobbyTable> {
 
+    List<AttTableSingle> selectByUserId(Long userId);
 }
 
