@@ -1,9 +1,9 @@
-package io.gitee.kewen.yuce.common.service.impl;
+package io.gitee.kewen.yuce.beattractions.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.gitee.kewen.yuce.common.mapper.HobbyTableMapper;
 import io.gitee.kewen.yuce.common.model.entity.HobbyTable;
-import io.gitee.kewen.yuce.common.service.HobbyTableService;
+import io.gitee.kewen.yuce.beattractions.service.HobbyTableService;
 import org.springframework.stereotype.Service;
 
 /**

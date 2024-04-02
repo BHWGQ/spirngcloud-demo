@@ -2,8 +2,10 @@ package io.gitee.kewen.yuce.beportal.controller;
 
 import io.gitee.kewen.yuce.beportal.dto.req.RegistReq;
 import io.gitee.kewen.yuce.beportal.dto.req.SysLoginReq;
+import io.gitee.kewen.yuce.beportal.dto.req.UpdateUserInfoReq;
 import io.gitee.kewen.yuce.beportal.dto.resp.RegistResp;
 import io.gitee.kewen.yuce.beportal.dto.resp.SysLoginResp;
+import io.gitee.kewen.yuce.beportal.dto.resp.UpdateUserInfoResp;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelUserInfoResp;
@@ -37,5 +39,11 @@ public class PortalController {
         LoginTable loginTable = service.getUserById(userId);
         TravelUserInfoResp travelUserInfoResp = new TravelUserInfoResp(loginTable.getUserName(),loginTable.getPicture());
         return Result.success(travelUserInfoResp);
+    }
+
+    @PostMapping("/updateUserInfo")
+    public Result<UpdateUserInfoResp> userInfoRespResult (@RequestBody UpdateUserInfoReq req){
+        UpdateUserInfoResp updateUserInfoResp = service.updateUserInfo(req);
+        return Result.success(updateUserInfoResp);
     }
 }

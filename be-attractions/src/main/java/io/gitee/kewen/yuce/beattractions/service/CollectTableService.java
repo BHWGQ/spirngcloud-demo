@@ -1,7 +1,10 @@
-package io.gitee.kewen.yuce.common.service;
+package io.gitee.kewen.yuce.beattractions.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
 import io.gitee.kewen.yuce.common.model.entity.CollectTable;
+
+import java.util.List;
 
 /**
  * (CollectTable)表服务接口
@@ -11,5 +14,6 @@ import io.gitee.kewen.yuce.common.model.entity.CollectTable;
  */
 public interface CollectTableService extends IService<CollectTable> {
 
+    List<AttTableSingle> selectByUserId(Long userId);
 }
 

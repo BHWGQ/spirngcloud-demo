@@ -1,4 +1,4 @@
-package io.gitee.kewen.yuce.common.service;
+package io.gitee.kewen.yuce.beattractions.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.gitee.kewen.yuce.common.model.entity.HobbyTable;

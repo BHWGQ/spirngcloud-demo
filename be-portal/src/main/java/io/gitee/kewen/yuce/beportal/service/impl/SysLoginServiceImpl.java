@@ -4,12 +4,16 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.gitee.kewen.yuce.beportal.dto.req.RegistReq;
 import io.gitee.kewen.yuce.beportal.dto.req.SysLoginReq;
+import io.gitee.kewen.yuce.beportal.dto.req.UpdateUserInfoReq;
 import io.gitee.kewen.yuce.beportal.dto.resp.RegistResp;
 import io.gitee.kewen.yuce.beportal.dto.resp.SysBaseResp;
 import io.gitee.kewen.yuce.beportal.dto.resp.SysLoginResp;
+import io.gitee.kewen.yuce.beportal.dto.resp.UpdateUserInfoResp;
 import io.gitee.kewen.yuce.beportal.exception.LoginException;
 import io.gitee.kewen.yuce.beportal.exception.RegistException;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
@@ -110,6 +114,25 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
             throw new RuntimeException("数据库发生了错误");
         }
         return loginTable;
+    }
+
+    @Override
+    public UpdateUserInfoResp updateUserInfo(UpdateUserInfoReq req) {
+        LambdaQueryWrapper<LoginTable> wrapper = new QueryWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,req.getUserId());
+        LoginTable loginTable = sysLoginMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(loginTable)){
+            throw LoginException.User_Not_Exist;
+        }
+        LambdaUpdateWrapper<LoginTable> lambdaUpdateWrapper = new UpdateWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,req.getUserId())
+                .set(LoginTable::getUserName,req.getUserName())
+                .set(LoginTable::getSignature,req.getSignature());
+        int affect = sysLoginMapper.update(null,lambdaUpdateWrapper);
+        if (affect == 0){
+            throw new RuntimeException("更新失败");
+        }
+        return new UpdateUserInfoResp(req.getUserName());
     }
 
     private void insertUser(RegistReq req) {
