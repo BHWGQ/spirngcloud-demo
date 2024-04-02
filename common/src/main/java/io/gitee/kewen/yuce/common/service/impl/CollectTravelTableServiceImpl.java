@@ -1,11 +1,15 @@
 package io.gitee.kewen.yuce.common.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import io.gitee.kewen.yuce.common.mapper.CollectTravelTableMapper;
+import io.gitee.kewen.yuce.common.model.dto.req.TravelInsertInfoReq;
+import io.gitee.kewen.yuce.common.model.dto.resp.TravelResp;
+import io.gitee.kewen.yuce.common.model.entity.CollectTable;
 import io.gitee.kewen.yuce.common.model.entity.CollectTravelTable;
 import io.gitee.kewen.yuce.common.service.CollectTravelTableService;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,50 @@ public class CollectTravelTableServiceImpl extends ServiceImpl<CollectTravelTabl
             throw new RuntimeException("该用户暂无收藏的游记");
         }
         return collectTravelTables;
+    }
+
+    @Override
+    public TravelResp insertCollectByReq(TravelInsertInfoReq req) {
+        LambdaQueryWrapper<CollectTravelTable> collectTravelTableLambdaQueryWrapper = new QueryWrapper<CollectTravelTable>().lambda()
+                .eq(CollectTravelTable::getUserId,req.getUserId())
+                .eq(CollectTravelTable::getTravelId,req.getTravelId());
+        CollectTravelTable collectTravelTable = collectTravelTableMapper.selectOne(collectTravelTableLambdaQueryWrapper);
+        if (ObjectUtil.isNotNull(collectTravelTable)){
+            throw new RuntimeException("您已收藏该游记了哦");
+        }
+        CollectTravelTable collectTravelTable1 = new CollectTravelTable();
+        collectTravelTable1.setUserId(req.getUserId());
+        collectTravelTable1.setTravelId(req.getTravelId());
+        int affet = collectTravelTableMapper.insert(collectTravelTable1);
+        if (affet == 0){
+            throw new RuntimeException("收藏失败");
+        }
+        return new TravelResp(req.getUserId());
+    }
+
+    @Override
+    public TravelResp deleteCollectByReq(TravelInsertInfoReq req) {
+        LambdaQueryWrapper<CollectTravelTable> collectTravelTableLambdaQueryWrapper = new QueryWrapper<CollectTravelTable>().lambda()
+                .eq(CollectTravelTable::getUserId,req.getUserId())
+                .eq(CollectTravelTable::getTravelId,req.getTravelId());
+        CollectTravelTable collectTravelTable = collectTravelTableMapper.selectOne(collectTravelTableLambdaQueryWrapper);
+        if (ObjectUtil.isNull(collectTravelTable)){
+            throw new RuntimeException("您好像并没有收藏该游记哦");
+        }
+        int affet = collectTravelTableMapper.delete(collectTravelTableLambdaQueryWrapper);
+        if (affet == 0){
+            throw new RuntimeException("删除失败");
+        }
+        return new TravelResp(req.getUserId());
+    }
+
+    @Override
+    public int queryCollectCounts(Integer travelId) {
+        LambdaQueryWrapper<CollectTravelTable> wrapper = new QueryWrapper<CollectTravelTable>().lambda()
+                .eq(CollectTravelTable::getTravelId,travelId);
+        List<CollectTravelTable> collectTravelTables = collectTravelTableMapper.selectList(wrapper);
+        int count = collectTravelTables.size();
+        return count;
     }
 }
 

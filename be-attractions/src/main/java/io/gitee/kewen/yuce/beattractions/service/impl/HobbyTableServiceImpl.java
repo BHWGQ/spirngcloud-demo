@@ -85,5 +85,14 @@ public class HobbyTableServiceImpl extends ServiceImpl<HobbyTableMapper, HobbyTa
         }
         return new AttCollectHobbyResp(req.getUserId());
     }
+
+    @Override
+    public int queryCollectCounts(Integer attId) {
+        LambdaQueryWrapper<HobbyTable> wrapper = new QueryWrapper<HobbyTable>().lambda()
+                .eq(HobbyTable::getAttId,attId);
+        List<HobbyTable> hobbyTables = hobbyTableMapper.selectList(wrapper);
+        int count = hobbyTables.size();
+        return count;
+    }
 }
 

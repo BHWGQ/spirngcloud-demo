@@ -83,4 +83,16 @@ public class AttCollectHobbyController {
         AttCollectHobbyResp attCollectHobbyResp = hobbyTableService.DeleteByReq(req);
         return Result.success(attCollectHobbyResp);
     }
+
+    @GetMapping("/collectAttCounts")
+    public Result<Integer> collectCounts (@RequestParam("attId") Integer attId){
+        int collectCount = collectTableService.queryCollectCounts(attId);
+        return Result.success(collectCount);
+    }
+
+    @GetMapping("/hobbyAttCounts")
+    public Result<Integer> hobbyCounts (@RequestParam("attId") Integer attId){
+        int hobbyCount = hobbyTableService.queryCollectCounts(attId);
+        return Result.success(hobbyCount);
+    }
 }

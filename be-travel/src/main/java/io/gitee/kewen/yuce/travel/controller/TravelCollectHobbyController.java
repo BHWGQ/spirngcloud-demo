@@ -3,7 +3,9 @@ package io.gitee.kewen.yuce.travel.controller;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
 import io.gitee.kewen.yuce.common.mapper.TravelTableMapper;
+import io.gitee.kewen.yuce.common.model.dto.req.TravelInsertInfoReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelQueryResp;
+import io.gitee.kewen.yuce.common.model.dto.resp.TravelResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelTenInfoResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelUserInfoResp;
 import io.gitee.kewen.yuce.common.model.entity.CollectTravelTable;
@@ -11,10 +13,7 @@ import io.gitee.kewen.yuce.common.model.entity.HobbyTravelTable;
 import io.gitee.kewen.yuce.common.service.CollectTravelTableService;
 import io.gitee.kewen.yuce.common.service.HobbyTravelTableService;
 import io.gitee.kewen.yuce.common.service.TravelTableService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -76,5 +75,41 @@ public class TravelCollectHobbyController {
             travelQueryResps.add(travelQueryResp);
         }
         return Result.success(travelQueryResps);
+    }
+
+    @PostMapping("/insertCollect")
+    public Result<TravelResp> travelResp(@RequestBody TravelInsertInfoReq req){
+        TravelResp resp = collectTravelTableService.insertCollectByReq(req);
+        return Result.success(resp);
+    }
+
+    @PostMapping("/deleteCollect")
+    public Result<TravelResp> deletetravel(@RequestBody TravelInsertInfoReq req){
+        TravelResp resp = collectTravelTableService.deleteCollectByReq(req);
+        return Result.success(resp);
+    }
+
+    @PostMapping("/insertHobby")
+    public Result<TravelResp> travelInsertHobby(@RequestBody TravelInsertInfoReq req){
+        TravelResp resp = hobbyTravelTableService.insertHobby(req);
+        return Result.success(resp);
+    }
+
+    @PostMapping("/deleteHobby")
+    public Result<TravelResp> travelDeleteHobby(@RequestBody TravelInsertInfoReq req){
+        TravelResp resp = hobbyTravelTableService.deleteHobby(req);
+        return Result.success(resp);
+    }
+
+    @GetMapping("/collectTravelCounts")
+    public Result<Integer> collectTravelCounts(@RequestParam("travelId") Integer travelId){
+        int collectTravelCount = collectTravelTableService.queryCollectCounts(travelId);
+        return Result.success(collectTravelCount);
+    }
+
+    @GetMapping("/hobbyTravelCounts")
+    public Result<Integer> hobbyTravelCounts(@RequestParam("travelId") Integer travelId){
+        int hobbyTravelCount = hobbyTravelTableService.queryHobbyCounts(travelId);
+        return Result.success(hobbyTravelCount);
     }
 }

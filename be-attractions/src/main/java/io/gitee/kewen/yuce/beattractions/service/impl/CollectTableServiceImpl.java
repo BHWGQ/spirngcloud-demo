@@ -84,5 +84,14 @@ public class CollectTableServiceImpl extends ServiceImpl<CollectTableMapper, Col
         }
         return new AttCollectHobbyResp(req.getUserId());
     }
+
+    @Override
+    public int queryCollectCounts(Integer attId) {
+        LambdaQueryWrapper<CollectTable> wrapper = new QueryWrapper<CollectTable>().lambda()
+                .eq(CollectTable::getAttId,attId);
+        List<CollectTable> collectTable = collectTableMapper.selectList(wrapper);
+        int count = collectTable.size();
+        return count;
+    }
 }
 
