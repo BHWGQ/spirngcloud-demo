@@ -10,10 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.gitee.kewen.yuce.beportal.dto.req.RegistReq;
 import io.gitee.kewen.yuce.beportal.dto.req.SysLoginReq;
 import io.gitee.kewen.yuce.beportal.dto.req.UpdateUserInfoReq;
-import io.gitee.kewen.yuce.beportal.dto.resp.RegistResp;
-import io.gitee.kewen.yuce.beportal.dto.resp.SysBaseResp;
-import io.gitee.kewen.yuce.beportal.dto.resp.SysLoginResp;
-import io.gitee.kewen.yuce.beportal.dto.resp.UpdateUserInfoResp;
+import io.gitee.kewen.yuce.beportal.dto.resp.*;
 import io.gitee.kewen.yuce.beportal.exception.LoginException;
 import io.gitee.kewen.yuce.beportal.exception.RegistException;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
@@ -117,7 +114,7 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
     }
 
     @Override
-    public UpdateUserInfoResp updateUserInfo(UpdateUserInfoReq req) {
+    public SysLoginUpdateResp updateUserInfo(UpdateUserInfoReq req) {
         LambdaQueryWrapper<LoginTable> wrapper = new QueryWrapper<LoginTable>().lambda()
                 .eq(LoginTable::getUserId,req.getUserId());
         LoginTable loginTable = sysLoginMapper.selectOne(wrapper);
@@ -132,7 +129,13 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         if (affect == 0){
             throw new RuntimeException("更新失败");
         }
-        return new UpdateUserInfoResp(req.getUserName());
+        SysBaseResp sysBaseResp = new SysBaseResp(req.getUserId(),req.getUserName(),loginTable.getPhoneNumber(),loginTable.getCreateTime());
+        SysLoginUpdateResp sysLoginUpdateResp = SysLoginUpdateResp.builder()
+                .sysBaseResp(sysBaseResp)
+                .signature(req.getSignature())
+                .picture(loginTable.getPicture())
+                .build();
+        return sysLoginUpdateResp;
     }
 
     private void insertUser(RegistReq req) {

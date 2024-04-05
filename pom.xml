@@ -32,6 +32,7 @@
         <druid.version>1.2.19</druid.version>
         <jjwt.verson>0.9.1</jjwt.verson>
         <druid.version>1.2.16</druid.version>
+        <minio.version>8.2.1</minio.version>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +49,14 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

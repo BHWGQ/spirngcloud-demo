@@ -11,9 +11,15 @@ import io.gitee.kewen.yuce.common.model.dto.resp.TravelUserInfoResp;
 import io.gitee.kewen.yuce.common.model.entity.TravelTable;
 import io.gitee.kewen.yuce.common.service.TravelPictureTableService;
 import io.gitee.kewen.yuce.common.service.TravelTableService;
+import io.gitee.kewen.yuce.travel.MinioUpload.MinioUploadService;
+import io.minio.errors.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +32,9 @@ public class TravelQueryController {
 
     @Resource
     private TravelPictureTableService travelPictureTableService;
+
+    @Resource
+    private MinioUploadService minioUploadService;
 
     @Resource
     private PortalClient portalClient;
@@ -53,4 +62,9 @@ public class TravelQueryController {
         return Result.success(travelSingleInfoResp);
     }
 
+    @PostMapping("/insertTravel")
+    public Result<String> result (@RequestParam("file") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException{
+        String pictureUrl = minioUploadService.upload(file);
+        return null;
+    }
 }

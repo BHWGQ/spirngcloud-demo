@@ -35,8 +35,8 @@ public class TravelPictureTable implements Serializable {
     @TableField("travel_id")
     private Integer travelId;
 
-    @TableField("ravel_picture")
-    private String ravelPicture;
+    @TableField("travel_picture")
+    private String travelPicture;
 
 
 }

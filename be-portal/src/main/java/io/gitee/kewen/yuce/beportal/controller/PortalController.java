@@ -3,17 +3,21 @@ package io.gitee.kewen.yuce.beportal.controller;
 import io.gitee.kewen.yuce.beportal.dto.req.RegistReq;
 import io.gitee.kewen.yuce.beportal.dto.req.SysLoginReq;
 import io.gitee.kewen.yuce.beportal.dto.req.UpdateUserInfoReq;
-import io.gitee.kewen.yuce.beportal.dto.resp.RegistResp;
-import io.gitee.kewen.yuce.beportal.dto.resp.SysLoginResp;
-import io.gitee.kewen.yuce.beportal.dto.resp.UpdateUserInfoResp;
+import io.gitee.kewen.yuce.beportal.dto.resp.*;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
+import io.gitee.kewen.yuce.beportal.MinioUpload.MinioUploadService;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelUserInfoResp;
 import io.gitee.kewen.yuce.common.model.entity.LoginTable;
+import io.minio.errors.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/user")
@@ -21,6 +25,9 @@ public class PortalController {
 
     @Resource
     private SysLoginService service;
+
+    @Resource
+    private MinioUploadService minioUploadService;
 
     @PostMapping("/login")
     public Result<SysLoginResp> login (@RequestBody @Valid SysLoginReq req){
@@ -42,8 +49,17 @@ public class PortalController {
     }
 
     @PostMapping("/updateUserInfo")
-    public Result<UpdateUserInfoResp> userInfoRespResult (@RequestBody UpdateUserInfoReq req){
-        UpdateUserInfoResp updateUserInfoResp = service.updateUserInfo(req);
+    public Result<SysLoginUpdateResp> userInfoRespResult (@RequestBody UpdateUserInfoReq req){
+        SysLoginUpdateResp updateUserInfoResp = service.updateUserInfo(req);
         return Result.success(updateUserInfoResp);
+    }
+
+    @PostMapping("/updatePicture")
+    public Result<UpdateUserPicture> updateUserPictureResult (@RequestParam("file") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        if (file.isEmpty()) {
+            throw new RuntimeException("上传失败，收到的文件为空");
+        }
+        String pictureUrl = minioUploadService.upload(file);
+        return Result.success(new UpdateUserPicture(pictureUrl));
     }
 }
