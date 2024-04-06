@@ -138,6 +138,25 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         return sysLoginUpdateResp;
     }
 
+    @Override
+    public Boolean updateUserPicture(Integer userId, String oldPicture, String pictureUrl) {
+        LambdaQueryWrapper<LoginTable> lambdaQueryWrapper = new QueryWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,userId)
+                .eq(LoginTable::getPicture,oldPicture);
+        LoginTable loginTable = sysLoginMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtil.isNull(loginTable)){
+            throw new RuntimeException("未查找到该用户，头像更换失败");
+        }
+        LambdaUpdateWrapper<LoginTable>lambdaUpdateWrapper = new UpdateWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,userId)
+                .set(LoginTable::getPicture,pictureUrl);
+        int affects = sysLoginMapper.update(null,lambdaUpdateWrapper);
+        if (affects == 0){
+            throw new RuntimeException("更新失败");
+        }
+        return true;
+    }
+
     private void insertUser(RegistReq req) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String picture = "http://s9tnzuteo.hd-bkt.clouddn.com/travel-plan-person-picture/base.png";

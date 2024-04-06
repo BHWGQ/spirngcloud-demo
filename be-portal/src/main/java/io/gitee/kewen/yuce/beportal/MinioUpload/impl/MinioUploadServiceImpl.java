@@ -4,6 +4,7 @@ import io.gitee.kewen.yuce.beportal.MinioUpload.MinioUploadService;
 import io.gitee.kewen.yuce.beportal.config.MinioConfig;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import io.minio.errors.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,5 +40,23 @@ public class MinioUploadServiceImpl implements MinioUploadService {
                         .contentType(file.getContentType())
                         .build());
         return minioConfig.getEndpoint() + "/" +minioConfig.getBucket() + "/" + fileName;
+    }
+
+    @Override
+    public String deletePicture(String oldPicture) {
+        try {
+            String newUrl = oldPicture.replace("http://117.72.41.45:9000/user-info/", "");
+            MinioClient minioClient = MinioClient.builder()
+                    .endpoint(minioConfig.getEndpoint())
+                    .credentials(minioConfig.getAccessKey(), minioConfig.getSecretKey())
+                    .build();
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(minioConfig.getBucket())
+                    .object(newUrl)
+                    .build());
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "删除成功";
     }
 }

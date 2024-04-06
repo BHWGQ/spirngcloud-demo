@@ -14,4 +14,6 @@ import java.security.NoSuchAlgorithmException;
  */
 public interface MinioUploadService {
     String upload(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
+
+    String deletePicture(String oldPicture);
 }

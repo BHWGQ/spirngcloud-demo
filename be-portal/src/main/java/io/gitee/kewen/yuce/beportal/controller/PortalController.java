@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -55,11 +56,19 @@ public class PortalController {
     }
 
     @PostMapping("/updatePicture")
-    public Result<UpdateUserPicture> updateUserPictureResult (@RequestParam("file") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public Result<UpdateUserPicture> updateUserPictureResult (@RequestParam("file") MultipartFile file , @RequestParam("userId") Integer userId, @RequestParam("oldPicture") String oldPicture) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         if (file.isEmpty()) {
             throw new RuntimeException("上传失败，收到的文件为空");
         }
         String pictureUrl = minioUploadService.upload(file);
+        Boolean updateUserInfo = service.updateUserPicture(userId,oldPicture,pictureUrl);
+        if (!updateUserInfo){
+            return Result.fail(null);
+        }
+        String deleteUrl = minioUploadService.deletePicture(oldPicture);
+        if (!"删除成功".equals(deleteUrl)){
+            return Result.fail(null);
+        }
         return Result.success(new UpdateUserPicture(pictureUrl));
     }
 }

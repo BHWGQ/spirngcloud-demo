@@ -17,4 +17,6 @@ public interface SysLoginService extends IService<LoginTable> {
     LoginTable getUserById(Long userId);
 
     SysLoginUpdateResp updateUserInfo(UpdateUserInfoReq req);
+
+    Boolean updateUserPicture(Integer userId, String oldPicture, String pictureUrl);
 }
