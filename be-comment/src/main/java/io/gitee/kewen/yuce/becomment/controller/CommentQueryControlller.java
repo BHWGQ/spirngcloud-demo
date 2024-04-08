@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.exception.CommentException.CommentException;
+import io.gitee.kewen.yuce.common.feign.PortalClient;
+import io.gitee.kewen.yuce.common.model.dto.resp.*;
 import io.gitee.kewen.yuce.common.model.entity.CommentTable;
 import io.gitee.kewen.yuce.common.model.entity.HotelComment;
 import io.gitee.kewen.yuce.common.model.entity.RecommendFoodComment;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +38,10 @@ public class CommentQueryControlller {
 
     @Resource
     private TravelCommentService travelCommentService;
+
+    @Resource
+    private PortalClient portalClient;
+
 
     @GetMapping("/query")
     public Result<List<CommentTable>> commentTableResult (@RequestParam("Id") Integer Id){
@@ -70,5 +77,20 @@ public class CommentQueryControlller {
             throw CommentException.Comment_No_Exist;
         }
         return Result.success(travelComments);
+    }
+
+    @GetMapping("/userAnswer")
+    public Result<UserAnswerResp> userAnswer(@RequestParam("userId") Long userId){
+        List<Att_user> att_users= commentTableService.queryByUserId(userId);
+        List<HotelRecommendThreeResp> hotelRecommendThreeResps = hotelCommentService.queryByUserId(userId);
+        List<FoodRecommendThreeResp> foodRecommendThreeResps = recommendFoodCommentService.queryByUserId(userId);
+        List<TravelOneResp> resps = travelCommentService.queryByUserId(userId);
+        Result<TravelUserInfoResp> travelQueryResps = portalClient.result(userId);
+        List<TravelQueryResp> resps1 = new ArrayList<>();
+        for (TravelOneResp item : resps){
+            TravelQueryResp resp = new TravelQueryResp(item.getId(),travelQueryResps.getData().getUserName(),item.getCreateTime(),item.getAttName(),item.getAttPicture(),travelQueryResps.getData().getUserPicture(),item.getAddress(),item.getIntroduce());
+            resps1.add(resp);
+        }
+        return Result.success(new UserAnswerResp(att_users,hotelRecommendThreeResps,foodRecommendThreeResps,resps1));
     }
 }

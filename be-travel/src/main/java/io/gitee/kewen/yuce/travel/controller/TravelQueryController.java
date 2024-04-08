@@ -30,10 +30,6 @@ public class TravelQueryController {
 
     @Resource
     private TravelTableService travelTableService;
-
-    @Resource
-    private TravelPictureTableService travelPictureTableService;
-
     @Resource
     private MinioUploadService minioUploadService;
 
