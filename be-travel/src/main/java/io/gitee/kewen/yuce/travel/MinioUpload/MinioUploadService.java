@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.travel.MinioUpload;
 
+import io.gitee.kewen.yuce.common.model.dto.req.WriteTravelReq;
 import io.minio.errors.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,5 +14,5 @@ import java.security.NoSuchAlgorithmException;
  * @data 2024/4/5 15:32
  */
 public interface MinioUploadService {
-    String upload(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
+    Boolean upload(MultipartFile[] files , WriteTravelReq req) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
 }

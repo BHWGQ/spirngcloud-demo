@@ -2,6 +2,7 @@ package io.gitee.kewen.yuce.beportal.controller;
 
 import io.gitee.kewen.yuce.beportal.dto.req.RegistReq;
 import io.gitee.kewen.yuce.beportal.dto.req.SysLoginReq;
+import io.gitee.kewen.yuce.beportal.dto.req.UpdatePictureReq;
 import io.gitee.kewen.yuce.beportal.dto.req.UpdateUserInfoReq;
 import io.gitee.kewen.yuce.beportal.dto.resp.*;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -71,4 +74,5 @@ public class PortalController {
         }
         return Result.success(new UpdateUserPicture(pictureUrl));
     }
+
 }

@@ -7,11 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * (TravelPictureTable)表实体类
@@ -24,6 +20,7 @@ import lombok.EqualsAndHashCode;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @TableName("travel_picture_table")
 public class TravelPictureTable implements Serializable {
 

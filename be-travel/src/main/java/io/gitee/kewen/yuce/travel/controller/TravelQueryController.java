@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.exception.TravelException.TravelException;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
+import io.gitee.kewen.yuce.common.model.dto.req.WriteTravelReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelQueryResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelSingleInfoResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelTenInfoResp;
@@ -63,8 +64,12 @@ public class TravelQueryController {
     }
 
     @PostMapping("/insertTravel")
-    public Result<String> result (@RequestParam("file") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException{
-        String pictureUrl = minioUploadService.upload(file);
-        return null;
+    public Result<Boolean> result (@RequestPart("files")MultipartFile[] files , WriteTravelReq req) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException{
+        Boolean result = minioUploadService.upload(files,req);
+        if (!result){
+            throw new RuntimeException("无法创建该游记");
+        }
+        return Result.success(true);
     }
+
 }
