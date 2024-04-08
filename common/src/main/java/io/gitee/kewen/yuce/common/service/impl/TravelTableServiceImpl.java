@@ -1,6 +1,8 @@
 package io.gitee.kewen.yuce.common.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.gitee.kewen.yuce.common.mapper.TravelTableMapper;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelTenInfoResp;
@@ -30,6 +32,17 @@ public class TravelTableServiceImpl extends ServiceImpl<TravelTableMapper, Trave
             throw new RuntimeException("出错啦");
         }
         return travelTenInfoResps;
+    }
+
+    @Override
+    public List<TravelTable> selectListByUserId(Long userId) {
+        LambdaQueryWrapper<TravelTable> wrapper = new QueryWrapper<TravelTable>().lambda()
+                .eq(TravelTable::getUserId,userId);
+        List<TravelTable> travelTables = travelTableMapper.selectList(wrapper);
+        if (CollectionUtil.isEmpty(travelTables)){
+            return null;
+        }
+        return travelTables;
     }
 }
 

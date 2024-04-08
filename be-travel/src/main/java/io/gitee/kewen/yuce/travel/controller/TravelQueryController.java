@@ -68,4 +68,16 @@ public class TravelQueryController {
         return Result.success(true);
     }
 
+    @GetMapping("/myTravel")
+    public Result<List<TravelQueryResp>> userTravel (@RequestParam("userId") Long userId){
+        List<TravelTable> travelTables = travelTableService.selectListByUserId(userId);
+        Result<TravelUserInfoResp> travelUserInfoRespResult = portalClient.result(userId);
+        List<TravelQueryResp> resps = new ArrayList<>();
+        for (TravelTable item : travelTables){
+            TravelQueryResp travelQueryResp = new TravelQueryResp(item.getId(),travelUserInfoRespResult.getData().getUserName(),item.getCreateTime(),item.getAttName(),item.getAttPicture(),travelUserInfoRespResult.getData().getUserPicture(),item.getAddress(),item.getIntroduce());
+            resps.add(travelQueryResp);
+        }
+        return Result.success(resps);
+    }
+
 }

@@ -15,5 +15,7 @@ import java.util.List;
 public interface TravelTableService extends IService<TravelTable> {
 
     List<TravelTenInfoResp> getTenInfo();
+
+    List<TravelTable> selectListByUserId(Long userId);
 }
 
