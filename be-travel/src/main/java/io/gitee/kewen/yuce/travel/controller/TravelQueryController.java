@@ -83,7 +83,7 @@ public class TravelQueryController {
 
     //删除游记，删除的同时删除多个表中信息，并且包括minio中的图片
     @PostMapping("/deleteTravel")
-    public Result<Boolean> userTravelDelete(List<TravelDeleteReq> reqs) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public Result<Boolean> userTravelDelete(@RequestBody List<TravelDeleteReq> reqs) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Boolean result = minioUploadService.deleteTravel(reqs);
         if (result){
             return Result.success(true);

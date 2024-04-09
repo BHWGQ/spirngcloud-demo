@@ -139,7 +139,7 @@ public class MinioUploadServiceImpl implements MinioUploadService {
                             .bucket(minioConfig.getBucket())
                             .object(deleteUrlPicture)
                             .build());
-                    travelPictureTableMapper.deleteById(item.getId());
+                    travelPictureTableMapper.deleteById(t1.getId());
                 }
             }
             LambdaQueryWrapper<TravelComment> travelCommentLambdaQueryWrapper = new QueryWrapper<TravelComment>().lambda()
