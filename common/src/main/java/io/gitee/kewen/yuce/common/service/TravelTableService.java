@@ -1,6 +1,7 @@
 package io.gitee.kewen.yuce.common.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.kewen.yuce.common.model.dto.req.TravelDeleteReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelTenInfoResp;
 import io.gitee.kewen.yuce.common.model.entity.TravelTable;
 
@@ -17,5 +18,6 @@ public interface TravelTableService extends IService<TravelTable> {
     List<TravelTenInfoResp> getTenInfo();
 
     List<TravelTable> selectListByUserId(Long userId);
+
 }
 

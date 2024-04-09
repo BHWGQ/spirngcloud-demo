@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.exception.TravelException.TravelException;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
+import io.gitee.kewen.yuce.common.model.dto.req.TravelDeleteReq;
 import io.gitee.kewen.yuce.common.model.dto.req.WriteTravelReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelQueryResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelSingleInfoResp;
@@ -78,6 +79,16 @@ public class TravelQueryController {
             resps.add(travelQueryResp);
         }
         return Result.success(resps);
+    }
+
+    //删除游记，删除的同时删除多个表中信息，并且包括minio中的图片
+    @PostMapping("/deleteTravel")
+    public Result<Boolean> userTravelDelete(List<TravelDeleteReq> reqs) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        Boolean result = minioUploadService.deleteTravel(reqs);
+        if (result){
+            return Result.success(true);
+        }
+        return Result.fail(false);
     }
 
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.gitee.kewen.yuce.common.mapper.TravelTableMapper;
+import io.gitee.kewen.yuce.common.model.dto.req.TravelDeleteReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelTenInfoResp;
 import io.gitee.kewen.yuce.common.model.entity.TravelTable;
 import io.gitee.kewen.yuce.common.service.TravelTableService;
