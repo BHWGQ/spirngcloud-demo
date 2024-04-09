@@ -23,5 +23,7 @@ public interface HobbyTableService extends IService<HobbyTable> {
     AttCollectHobbyResp DeleteByReq(AttCollectHobbyInsertReq req);
 
     int queryCollectCounts(Integer attId);
+
+    Boolean querySature(Long userId, Integer attId);
 }
 

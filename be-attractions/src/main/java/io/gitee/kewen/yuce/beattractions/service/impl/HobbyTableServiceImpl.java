@@ -94,5 +94,17 @@ public class HobbyTableServiceImpl extends ServiceImpl<HobbyTableMapper, HobbyTa
         int count = hobbyTables.size();
         return count;
     }
+
+    @Override
+    public Boolean querySature(Long userId, Integer attId) {
+        LambdaQueryWrapper<HobbyTable> hobbyTableLambdaQueryWrapper = new QueryWrapper<HobbyTable>().lambda()
+                .eq(HobbyTable::getAttId,attId)
+                .eq(HobbyTable::getUserId,userId);
+        HobbyTable hobbyTable = hobbyTableMapper.selectOne(hobbyTableLambdaQueryWrapper);
+        if (ObjectUtil.isNull(hobbyTable)){
+            return false;
+        }
+        return true;
+    }
 }
 

@@ -23,5 +23,7 @@ public interface CollectTableService extends IService<CollectTable> {
     AttCollectHobbyResp DeleteByReq(AttCollectHobbyInsertReq req);
 
     int queryCollectCounts(Integer attId);
+
+    Boolean querySature(Long userId, Integer attId);
 }
 

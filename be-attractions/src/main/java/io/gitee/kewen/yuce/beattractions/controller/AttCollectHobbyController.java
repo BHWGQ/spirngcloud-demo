@@ -5,6 +5,7 @@ import io.gitee.kewen.yuce.beattractions.dto.resp.AttCollectHobbyResp;
 import io.gitee.kewen.yuce.beattractions.dto.resp.AttHomePageQueryResp;
 import io.gitee.kewen.yuce.beattractions.service.AttTableSingleService;
 import io.gitee.kewen.yuce.common.bean.Result;
+import io.gitee.kewen.yuce.common.model.dto.req.AttQueryHobbyCollectResp;
 import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
 import io.gitee.kewen.yuce.beattractions.service.CollectTableService;
 import io.gitee.kewen.yuce.beattractions.service.HobbyTableService;
@@ -94,5 +95,17 @@ public class AttCollectHobbyController {
     public Result<Integer> hobbyCounts (@RequestParam("attId") Integer attId){
         int hobbyCount = hobbyTableService.queryCollectCounts(attId);
         return Result.success(hobbyCount);
+    }
+
+    //查询该用户当前查询景点页面点赞以及收藏状态
+    @GetMapping("/hobbyCollectQuery")
+    public Result<AttQueryHobbyCollectResp> hobbyCollectRespResult (@RequestParam("userId") Long userId , @RequestParam("attId") Integer attId){
+        Boolean hobbyQuery = hobbyTableService.querySature(userId,attId);
+        Boolean collectQuery = collectTableService.querySature(userId,attId);
+        AttQueryHobbyCollectResp attQueryHobbyCollectResp = AttQueryHobbyCollectResp.builder()
+                .hobby(hobbyQuery)
+                .collect(collectQuery)
+                .build();
+        return Result.success(attQueryHobbyCollectResp);
     }
 }

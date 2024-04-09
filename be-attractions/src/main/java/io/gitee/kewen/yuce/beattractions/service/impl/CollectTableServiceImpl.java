@@ -93,5 +93,17 @@ public class CollectTableServiceImpl extends ServiceImpl<CollectTableMapper, Col
         int count = collectTable.size();
         return count;
     }
+
+    @Override
+    public Boolean querySature(Long userId, Integer attId) {
+        LambdaQueryWrapper<CollectTable> collectTableLambdaQueryWrapper = new QueryWrapper<CollectTable>().lambda()
+                .eq(CollectTable::getAttId,attId)
+                .eq(CollectTable::getUserId,userId);
+        CollectTable collectTable = collectTableMapper.selectOne(collectTableLambdaQueryWrapper);
+        if (ObjectUtil.isNull(collectTable)){
+            return false;
+        }
+        return true;
+    }
 }
 
