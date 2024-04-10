@@ -151,8 +151,7 @@ public class MinioUploadServiceImpl implements MinioUploadService {
                 }
             }
             LambdaQueryWrapper<CollectTravelTable> collectTravelTableLambdaQueryWrapper = new QueryWrapper<CollectTravelTable>().lambda()
-                    .eq(CollectTravelTable::getTravelId,travelTable.getId())
-                    .eq(CollectTravelTable::getUserId,travelTable.getUserId());
+                    .eq(CollectTravelTable::getTravelId,travelTable.getId());
             List<CollectTravelTable> list = collectTravelTableMapper.selectList(collectTravelTableLambdaQueryWrapper);
             if (CollectionUtil.isNotEmpty(list)){
                 for (CollectTravelTable collectTravelTable : list){
@@ -160,8 +159,7 @@ public class MinioUploadServiceImpl implements MinioUploadService {
                 }
             }
             LambdaQueryWrapper<HobbyTravelTable> hobbyTravelTableLambdaQueryWrapper = new QueryWrapper<HobbyTravelTable>().lambda()
-                    .eq(HobbyTravelTable::getTravelId,travelTable.getId())
-                    .eq(HobbyTravelTable::getUserId,travelTable.getUserId());
+                    .eq(HobbyTravelTable::getTravelId,travelTable.getId());
             List<HobbyTravelTable> hobbyTravelTables = hobbyTravelTableMapper.selectList(hobbyTravelTableLambdaQueryWrapper);
             if (CollectionUtil.isNotEmpty(hobbyTravelTables)){
                 for (HobbyTravelTable hobbyTravelTable: hobbyTravelTables){

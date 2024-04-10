@@ -22,5 +22,7 @@ public interface CollectTravelTableService extends IService<CollectTravelTable> 
     TravelResp deleteCollectByReq(TravelInsertInfoReq req);
 
     int queryCollectCounts(Integer travelId);
+
+    Boolean querySature(Long userId, Integer travelId);
 }
 

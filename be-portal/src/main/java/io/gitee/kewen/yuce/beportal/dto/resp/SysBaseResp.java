@@ -17,4 +17,6 @@ public class SysBaseResp {
     private Long phoneNumber;
 
     private LocalDateTime createTime;
+
+    private String email;
 }

@@ -62,13 +62,14 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
             String token = JwtUtil.sign(claims);
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             stringRedisTemplate.opsForValue().set("login:" + token, loginTable.getUserName(), 1800, TimeUnit.SECONDS);
-            SysBaseResp sysBaseResp = new SysBaseResp(loginTable.getUserId(),loginTable.getUserName(),loginTable.getPhoneNumber(),loginTable.getCreateTime());
+            SysBaseResp sysBaseResp = new SysBaseResp(loginTable.getUserId(),loginTable.getUserName(),loginTable.getPhoneNumber(),loginTable.getCreateTime(),loginTable.getEmail());
             SysLoginResp sysLoginResp = new SysLoginResp();
             sysLoginResp.setSysBaseResp(sysBaseResp);
             sysLoginResp.setToken(token);
             sysLoginResp.setExpireTime(date);
             sysLoginResp.setSignature(loginTable.getSignature());
             sysLoginResp.setPicture(loginTable.getPicture());
+            sysLoginResp.setEmail(loginTable.getEmail());
             return sysLoginResp;
         }catch (Exception e) {
             throw new RuntimeException(e);
@@ -80,7 +81,9 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         LambdaQueryWrapper<LoginTable> registQueryWrapper = new QueryWrapper<LoginTable>().lambda()
                 .eq(LoginTable::getUserId,req.getUserId())
                 .or()
-                .eq(LoginTable::getPhoneNumber,req.getPhoneNumber());
+                .eq(LoginTable::getPhoneNumber,req.getPhoneNumber())
+                .or()
+                .eq(LoginTable::getEmail,req.getEmail());
         LoginTable table = sysLoginMapper.selectOne(registQueryWrapper);
         if (ObjectUtil.isNotNull(table)){
             throw RegistException.User_Is_Exist;
@@ -124,12 +127,13 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         LambdaUpdateWrapper<LoginTable> lambdaUpdateWrapper = new UpdateWrapper<LoginTable>().lambda()
                 .eq(LoginTable::getUserId,req.getUserId())
                 .set(LoginTable::getUserName,req.getUserName())
-                .set(LoginTable::getSignature,req.getSignature());
+                .set(LoginTable::getSignature,req.getSignature())
+                .set(LoginTable::getEmail,req.getEmail());
         int affect = sysLoginMapper.update(null,lambdaUpdateWrapper);
         if (affect == 0){
             throw new RuntimeException("更新失败");
         }
-        SysBaseResp sysBaseResp = new SysBaseResp(req.getUserId(),req.getUserName(),loginTable.getPhoneNumber(),loginTable.getCreateTime());
+        SysBaseResp sysBaseResp = new SysBaseResp(req.getUserId(),req.getUserName(),loginTable.getPhoneNumber(),loginTable.getCreateTime(),req.getEmail());
         SysLoginUpdateResp sysLoginUpdateResp = SysLoginUpdateResp.builder()
                 .sysBaseResp(sysBaseResp)
                 .signature(req.getSignature())
@@ -161,7 +165,7 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         LocalDateTime currentDateTime = LocalDateTime.now();
         String picture = "http://s9tnzuteo.hd-bkt.clouddn.com/travel-plan-person-picture/base.png";
         String signature = "这家伙很懒，啥都不想说";
-        LoginTable rolerNull = new LoginTable(req.getUserId(),req.getUserName(),req.getPassword(),req.getPhoneNumber(),req.getRoler(),0,currentDateTime,signature,picture);
+        LoginTable rolerNull = new LoginTable(req.getUserId(),req.getUserName(),req.getPassword(),req.getPhoneNumber(),req.getRoler(),0,currentDateTime,signature,picture,req.getEmail());
         int rowsAffected = sysLoginMapper.insert(rolerNull);
         if (rowsAffected <= 0) {
             throw new RuntimeException("插入失败，可能是由于主键冲突或其他原因。");

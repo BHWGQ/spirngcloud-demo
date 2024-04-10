@@ -3,6 +3,7 @@ package io.gitee.kewen.yuce.travel.controller;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
 import io.gitee.kewen.yuce.common.mapper.TravelTableMapper;
+import io.gitee.kewen.yuce.common.model.dto.req.AttQueryHobbyCollectResp;
 import io.gitee.kewen.yuce.common.model.dto.req.TravelInsertInfoReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelQueryResp;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelResp;
@@ -111,5 +112,17 @@ public class TravelCollectHobbyController {
     public Result<Integer> hobbyTravelCounts(@RequestParam("travelId") Integer travelId){
         int hobbyTravelCount = hobbyTravelTableService.queryHobbyCounts(travelId);
         return Result.success(hobbyTravelCount);
+    }
+
+    //查看当前用户对具体游记的收藏以及点赞情况
+    @GetMapping("/hobbyCollectQuery")
+    public Result<AttQueryHobbyCollectResp> hobbyCollectRespResult (@RequestParam("userId") Long userId , @RequestParam("travelId") Integer travelId){
+        Boolean travelHobby = hobbyTravelTableService.querySature(userId,travelId);
+        Boolean travelCollect = collectTravelTableService.querySature(userId,travelId);
+        AttQueryHobbyCollectResp attQueryHobbyCollectResp = AttQueryHobbyCollectResp.builder()
+                .hobby(travelHobby)
+                .collect(travelCollect)
+                .build();
+        return Result.success(attQueryHobbyCollectResp);
     }
 }

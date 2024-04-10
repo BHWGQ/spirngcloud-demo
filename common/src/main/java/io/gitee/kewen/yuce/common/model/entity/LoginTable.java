@@ -59,6 +59,7 @@ public class LoginTable implements Serializable {
     @TableField("picture_person")
     private String picture;
 
-
+    @TableField("user_email")
+    private String email;
 }
 

@@ -25,4 +25,6 @@ public class RegistReq {
     private Long phoneNumber;
 
     private String roler;
+
+    private String email;
 }

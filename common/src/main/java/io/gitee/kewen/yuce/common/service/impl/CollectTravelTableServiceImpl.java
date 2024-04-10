@@ -83,5 +83,17 @@ public class CollectTravelTableServiceImpl extends ServiceImpl<CollectTravelTabl
         int count = collectTravelTables.size();
         return count;
     }
+
+    @Override
+    public Boolean querySature(Long userId, Integer travelId) {
+        LambdaQueryWrapper<CollectTravelTable> wrapper = new QueryWrapper<CollectTravelTable>().lambda()
+                .eq(CollectTravelTable::getUserId,userId)
+                .eq(CollectTravelTable::getTravelId,travelId);
+        CollectTravelTable collectTravelTable = collectTravelTableMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(collectTravelTable)){
+            return false;
+        }
+        return true;
+    }
 }
 

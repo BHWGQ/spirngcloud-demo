@@ -82,5 +82,17 @@ public class HobbyTravelTableServiceImpl extends ServiceImpl<HobbyTravelTableMap
         int count = hobbyTravelTables.size();
         return count;
     }
+
+    @Override
+    public Boolean querySature(Long userId, Integer travelId) {
+        LambdaQueryWrapper<HobbyTravelTable> hobbyTravelTableLambdaQueryWrapper = new QueryWrapper<HobbyTravelTable>().lambda()
+                .eq(HobbyTravelTable::getUserId,userId)
+                .eq(HobbyTravelTable::getTravelId,travelId);
+        HobbyTravelTable hobbyTravelTable = hobbyTravelTableMapper.selectOne(hobbyTravelTableLambdaQueryWrapper);
+        if (ObjectUtil.isNull(hobbyTravelTable)){
+            return false;
+        }
+        return true;
+    }
 }
 

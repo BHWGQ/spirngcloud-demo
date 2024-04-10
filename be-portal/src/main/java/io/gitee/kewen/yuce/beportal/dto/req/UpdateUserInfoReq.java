@@ -13,4 +13,6 @@ public class UpdateUserInfoReq {
     private Long userId;
 
     private String signature;
+
+    private String email;
 }

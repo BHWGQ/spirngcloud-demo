@@ -20,4 +20,6 @@ public class SysLoginResp {
     private String signature;
 
     private String picture;
+
+    private String email;
 }

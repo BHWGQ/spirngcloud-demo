@@ -23,5 +23,7 @@ public interface HobbyTravelTableService extends IService<HobbyTravelTable> {
     TravelResp deleteHobby(TravelInsertInfoReq req);
 
     int queryHobbyCounts(Integer travelId);
+
+    Boolean querySature(Long userId, Integer travelId);
 }
 
