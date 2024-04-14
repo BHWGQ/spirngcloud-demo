@@ -161,6 +161,17 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         return true;
     }
 
+    @Override
+    public String getByEmail(Long userId) {
+        LambdaQueryWrapper<LoginTable> wrapper = new QueryWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,userId);
+        LoginTable loginTable = sysLoginMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(loginTable)){
+            throw new RuntimeException("您的账号有问题，请联系管理员后重试");
+        }
+        return loginTable.getEmail();
+    }
+
     private void insertUser(RegistReq req) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String picture = "http://s9tnzuteo.hd-bkt.clouddn.com/travel-plan-person-picture/base.png";

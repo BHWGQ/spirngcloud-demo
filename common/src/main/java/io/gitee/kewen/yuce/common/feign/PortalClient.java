@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface PortalClient {
     @GetMapping("/userInfo")
     Result<TravelUserInfoResp> result (@RequestParam("userId") Long userId);
+
+    @GetMapping("/getEmailByUserId")
+    Result<String> getEmail (@RequestParam("userId") Long userId);
 }

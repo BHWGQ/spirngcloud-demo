@@ -1,6 +1,7 @@
-package io.gitee.kewen.yuce.common.service;
+package io.gitee.kewen.yuce.travel.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.kewen.yuce.common.model.dto.req.TripInsertReq;
 import io.gitee.kewen.yuce.common.model.entity.TripTable;
 
 /**
@@ -11,5 +12,6 @@ import io.gitee.kewen.yuce.common.model.entity.TripTable;
  */
 public interface TripTableService extends IService<TripTable> {
 
+    Boolean insertTrip(TripInsertReq req);
 }
 
