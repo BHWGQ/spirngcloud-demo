@@ -25,6 +25,9 @@ public class TravelTripController {
     @PostMapping("/insertTrip")
     public Result<String> messageTell (@RequestBody TripInsertReq req){
         Boolean result = tripTableService.insertTrip(req);
+        if (!result){
+            return Result.fail(null);
+        }
         return Result.success(null);
     }
 }

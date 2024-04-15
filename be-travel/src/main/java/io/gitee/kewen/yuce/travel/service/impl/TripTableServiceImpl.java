@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.gitee.kewen.yuce.common.consts.RabbitMqConsts;
+import io.gitee.kewen.yuce.common.exception.TravelException.TravelException;
 import io.gitee.kewen.yuce.common.mapper.TripTableMapper;
 import io.gitee.kewen.yuce.common.model.dto.req.TripInsertReq;
 import io.gitee.kewen.yuce.common.model.entity.TripTable;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -38,7 +40,10 @@ public class TripTableServiceImpl extends ServiceImpl<TripTableMapper, TripTable
                 .eq(TripTable::getDesAdd,req.getDesAdd());
         TripTable tripTable = tripTableMapper.selectOne(wrapper);
         if (ObjectUtil.isNotNull(tripTable)){
-            throw new RuntimeException("您已经预定了行程");
+            throw TravelException.exist;
+        }
+        if (req.getCreateTime().isBefore(LocalDateTime.now())){
+            throw TravelException.Time_Error;
         }
         TripTable tripTableObject = TripTable.builder()
                 .userId(req.getUserId())
