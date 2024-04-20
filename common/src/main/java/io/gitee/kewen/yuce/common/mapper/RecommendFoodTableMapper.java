@@ -22,7 +22,7 @@ public interface RecommendFoodTableMapper extends BaseMapper<RecommendFoodTable>
     @Select("SELECT * FROM recommend_food_table WHERE address_id = #{addressId} ORDER BY RAND() LIMIT 3")
     List<RecommendFoodTable> selectRandomRest(@Param("addressId") Integer addressId);
 
-    @Select("SELECT * FROM recommend_food_table ORDER BY RAND() LIMIT 6")
+    @Select("SELECT * FROM recommend_food_table ORDER BY RAND() LIMIT 5")
     List<RecommendFoodTable> selectRandom();
 
 }

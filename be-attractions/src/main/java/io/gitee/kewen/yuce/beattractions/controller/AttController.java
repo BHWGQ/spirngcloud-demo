@@ -15,6 +15,7 @@ import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
 import io.gitee.kewen.yuce.common.model.entity.CommentTable;
 import io.gitee.kewen.yuce.common.service.AttPictureService;
 import io.gitee.kewen.yuce.beattractions.service.AttTableSingleService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/att")
+@Validated
 public class AttController {
     @Resource
     private AttPictureService attPictureService;
@@ -72,7 +74,7 @@ public class AttController {
     }
 
     @GetMapping("/attQueryByAttName")
-    public Result<List<AttQueryByAttNameResp>> result (@Valid @RequestParam("attName") @NotBlank(message = "搜索内容不能为空") String attName){
+    public Result<List<AttQueryByAttNameResp>> result ( @RequestParam("attName") @NotBlank(message = "搜索内容不能为空") String attName){
         List<AttTableSingle> attTableSingle = attTableSingleService.getByAttName(attName);
         List<AttQueryByAttNameResp> attQueryByAttNameResps = new ArrayList<>();
         for (AttTableSingle item : attTableSingle){

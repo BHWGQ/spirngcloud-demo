@@ -6,7 +6,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author wspstart
@@ -35,6 +43,16 @@ public class GlobalExceptionHandler {
             log.debug("参数校验失败。共 {} 个错误，返回的第 0 个错误为：\n {} ", errorCount, objectError.toString());
         }
         return Result.fail(objectError.getDefaultMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    public Result<String> handleConstraintViolationException(ConstraintViolationException ex) {
+        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+        for (ConstraintViolation<?> violation : constraintViolations) {
+            return Result.fail(violation.getMessage());
+        }
+        return Result.fail("输入验证失败");
     }
 
     @ExceptionHandler(Exception.class)
