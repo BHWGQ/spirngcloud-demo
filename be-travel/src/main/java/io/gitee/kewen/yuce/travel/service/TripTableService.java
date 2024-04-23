@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import io.gitee.kewen.yuce.common.model.dto.req.TripInsertReq;
 import io.gitee.kewen.yuce.common.model.entity.TripTable;
 
+import java.util.List;
+
 /**
  * (TripTable)表服务接口
  *
@@ -13,5 +15,7 @@ import io.gitee.kewen.yuce.common.model.entity.TripTable;
 public interface TripTableService extends IService<TripTable> {
 
     Boolean insertTrip(TripInsertReq req);
+
+    List<TripTable> getByUserId(Long userId);
 }
 

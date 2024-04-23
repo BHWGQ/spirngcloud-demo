@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.travel.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * (TripTable)表服务实现类
@@ -61,6 +63,17 @@ public class TripTableServiceImpl extends ServiceImpl<TripTableMapper, TripTable
             return correlationData;
         });
         return true;
+    }
+
+    @Override
+    public List<TripTable> getByUserId(Long userId) {
+        LambdaQueryWrapper<TripTable> lambdaQueryWrapper = new QueryWrapper<TripTable>().lambda()
+                .eq(TripTable::getUserId,userId);
+        List<TripTable> tripTables = tripTableMapper.selectList(lambdaQueryWrapper);
+        if (CollectionUtil.isEmpty(tripTables)){
+            return null;
+        }
+        return tripTables;
     }
 }
 

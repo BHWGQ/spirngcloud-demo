@@ -7,7 +7,9 @@ import cn.zrgzs.chatglm.session.OpenAiSession;
 import com.alibaba.fastjson.JSON;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.model.dto.req.TripInsertReq;
+import io.gitee.kewen.yuce.common.model.entity.TripTable;
 import io.gitee.kewen.yuce.travel.service.TripTableService;
+import javafx.geometry.Pos;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSourceListener;
@@ -45,6 +47,25 @@ public class TravelTripController {
         }
         return Result.success(null);
     }
+
+    @GetMapping("/queryMyselfTrip")
+    public Result<List<TripTable>> tripTableResult (@RequestParam("userId") Long userId){
+        List<TripTable> tripTables = tripTableService.getByUserId(userId);
+        if (tripTables == null){
+            return Result.success(null);
+        }
+        return Result.success(tripTables);
+    }
+
+    @DeleteMapping("/deleteTrip")
+    public Result<Boolean> deleteTripResult(@RequestParam("id") Integer id){
+        Boolean result = tripTableService.removeById(id);
+        if (result){
+            return Result.success(result);
+        }
+        return Result.fail(false);
+    }
+
 
     @Resource
     private OpenAiSession openAiSession;
