@@ -10,10 +10,13 @@ import io.gitee.kewen.yuce.beattractions.service.AttTableSingleService;
 import io.gitee.kewen.yuce.beattractions.mapper.AttTableSingleMapper;
 import io.gitee.kewen.yuce.beattractions.dto.resp.AttHomePageQueryTen;
 import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * (AttTableSingle)表服务实现类
@@ -25,12 +28,17 @@ import java.util.List;
 public class AttTableSingleServiceImpl extends ServiceImpl<AttTableSingleMapper, AttTableSingle> implements AttTableSingleService {
     @Resource
     private AttTableSingleMapper attTableSingleMapper;
+
+    @Resource
+    private RedisTemplate<String,List<AttHomePageQueryTen>> redisTemplate;
+
     @Override
     public List<AttHomePageQueryTen> queryTenInfo() {
         List<AttHomePageQueryTen> attHomePageQueryTens = attTableSingleMapper.getRandomRecords();
         if (ObjectUtil.isNull(attHomePageQueryTens)){
             throw QueryException.Data_Not_Exist;
         }
+        redisTemplate.opsForValue().set("homePageQuery", attHomePageQueryTens, 1800, TimeUnit.SECONDS);
         return attHomePageQueryTens;
     }
 

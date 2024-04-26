@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.beattractions.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import io.gitee.kewen.yuce.beattractions.dto.resp.AttHomePageQueryResp;
 import io.gitee.kewen.yuce.beattractions.dto.resp.AttHomePageQueryTen;
@@ -15,6 +16,10 @@ import io.gitee.kewen.yuce.common.model.entity.AttTableSingle;
 import io.gitee.kewen.yuce.common.model.entity.CommentTable;
 import io.gitee.kewen.yuce.common.service.AttPictureService;
 import io.gitee.kewen.yuce.beattractions.service.AttTableSingleService;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,11 +51,30 @@ public class AttController {
     @Resource
     private WeatherFeignClient weatherFeignClient;
 
+    @Resource
+    private RedisTemplate<String,List<AttHomePageQueryTen>> redisTemplate;
+
+    @Resource
+    private RedissonClient redissonClient;
+
     @GetMapping("/homePageQuery")
     public Result<List<AttHomePageQueryResp>> queryRespResult (){
-        List<AttHomePageQueryTen> attHomePageQueryTens = attTableSingleService.queryTenInfo();
+        List<AttHomePageQueryTen> homePageQueryTens =  redisTemplate.opsForValue().get("homePageQuery");
+        if (CollectionUtil.isEmpty(homePageQueryTens)){
+            RLock lock = redissonClient.getLock("homePageQuery");
+            lock.lock();
+            try {
+                homePageQueryTens = redisTemplate.opsForValue().get("homePageQuery");
+                if (CollectionUtil.isEmpty(homePageQueryTens)) {
+                    homePageQueryTens = attTableSingleService.queryTenInfo();
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
+//        List<AttHomePageQueryTen> attHomePageQueryTens = attTableSingleService.queryTenInfo();
         List<AttHomePageQueryResp> attHomePageQueryResps = new ArrayList<>();
-        for (AttHomePageQueryTen item: attHomePageQueryTens){
+        for (AttHomePageQueryTen item: homePageQueryTens){
             String byId = attPictureService.getByAttId(item.getId());
             AttHomePageQueryResp attHomePageQueryResp = new AttHomePageQueryResp(byId,item.getId(),item.getAttName(),item.getAttAddress(),item.getScore());
             attHomePageQueryResps.add(attHomePageQueryResp);
