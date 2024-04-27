@@ -1,7 +1,7 @@
 server:
   port: 8050
-  servlet:
-    context-path: /travel
+#  servlet:
+#    context-path: /travel
 spring:
   application:
     name: cloud-gateway
@@ -15,7 +15,14 @@ spring:
           - data-id: gateway.properties
             group: DEFAULT_GROUP
             refresh: true
-#  spring.cloud.nacos.config.shared-configs[0].data-id=mysql.yml
-#  spring.cloud.nacos.config.shared-configs[0].group=DEFAULT_GROUP
-#  spring.cloud.nacos.config.shared-configs[0].refresh=true
+
+  redis:
+    host: 192.168.182.168
+    password: 20031028
+    port: 6379
+    database: 8
+#  spring.cloud.nacos.config.shared-configs[1].data-id=redis.yml
+#  spring.cloud.nacos.config.shared-configs[1].group=DEFAULT_GROUP
+#  spring.cloud.nacos.config.shared-configs[1].refresh=true
+
 

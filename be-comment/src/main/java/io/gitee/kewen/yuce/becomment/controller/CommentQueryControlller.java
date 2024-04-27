@@ -47,8 +47,14 @@ public class CommentQueryControlller {
     public Result<List<CommentTable>> commentTableResult (@RequestParam("Id") Integer Id){
         List<CommentTable> commentTable = commentTableService.list(new LambdaQueryWrapper<CommentTable>().eq(CommentTable::getAttId,Id));
         if (CollectionUtil.isEmpty(commentTable)){
-            throw CommentException.Comment_No_Exist;
+            return Result.success(null);
         }
+//        List<CommentTableQueryResp> commentTableQueryResps = new ArrayList<>();
+//        for (CommentTable item : commentTable){
+//            Result<String> picture = portalClient.getUserPicture(item.getUserId());
+//            CommentTableQueryResp commentTableQueryResp = new CommentTableQueryResp(item,picture.getData());
+//            commentTableQueryResps.add(commentTableQueryResp);
+//        }
         return Result.success(commentTable);
     }
 
@@ -56,7 +62,7 @@ public class CommentQueryControlller {
     public Result<List<RecommendFoodComment>> listResult (@RequestParam("id") Integer id){
         List<RecommendFoodComment> recommendFoodComments = recommendFoodCommentService.list(new LambdaQueryWrapper<RecommendFoodComment>().eq(RecommendFoodComment::getRestId,id));
         if (CollectionUtil.isEmpty(recommendFoodComments)){
-            throw CommentException.Comment_No_Exist;
+            return Result.success(null);
         }
         return Result.success(recommendFoodComments);
     }
@@ -65,7 +71,7 @@ public class CommentQueryControlller {
     public Result<List<HotelComment>> hotelListResult(@RequestParam("id") Integer id){
         List<HotelComment> hotelComments = hotelCommentService.list(new LambdaQueryWrapper<HotelComment>().eq(HotelComment::getHotelId,id));
         if (CollectionUtil.isEmpty(hotelComments)){
-            throw CommentException.Comment_No_Exist;
+            return Result.success(null);
         }
         return Result.success(hotelComments);
     }
@@ -74,7 +80,7 @@ public class CommentQueryControlller {
     public Result<List<TravelComment>> travelListResult(@RequestParam("id") Integer id){
         List<TravelComment> travelComments = travelCommentService.list(new LambdaQueryWrapper<TravelComment>().eq(TravelComment::getTravelId,id));
         if (CollectionUtil.isEmpty(travelComments)){
-            throw CommentException.Comment_No_Exist;
+            return Result.success(null);
         }
         return Result.success(travelComments);
     }

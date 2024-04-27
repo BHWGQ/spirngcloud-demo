@@ -13,4 +13,7 @@ public interface PortalClient {
 
     @GetMapping("/getEmailByUserId")
     Result<String> getEmail (@RequestParam("userId") Long userId);
+
+    @GetMapping("/getUserPicture")
+    Result<String> getUserPicture (@RequestParam("userId") Long userId);
 }

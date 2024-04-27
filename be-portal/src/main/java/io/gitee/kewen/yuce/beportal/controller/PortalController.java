@@ -81,4 +81,10 @@ public class PortalController {
         return Result.success(email);
     }
 
+    @GetMapping("/getUserPicture")
+    public Result<String> getUserPicture (@RequestParam("userId") Long userId){
+        String userPicture = service.getUserPictureByUserId(userId);
+        return Result.success(userPicture);
+    }
+
 }

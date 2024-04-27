@@ -61,7 +61,7 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
             claims.put("userId", req.getUserId());
             String token = JwtUtil.sign(claims);
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-            stringRedisTemplate.opsForValue().set("login:" + token, loginTable.getUserName(), 1800, TimeUnit.SECONDS);
+            stringRedisTemplate.opsForValue().set("login:" + token, String.valueOf(loginTable.getUserId()), 1800, TimeUnit.SECONDS);
             SysBaseResp sysBaseResp = new SysBaseResp(loginTable.getUserId(),loginTable.getUserName(),loginTable.getPhoneNumber(),loginTable.getCreateTime(),loginTable.getEmail());
             SysLoginResp sysLoginResp = new SysLoginResp();
             sysLoginResp.setSysBaseResp(sysBaseResp);
@@ -170,6 +170,17 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
             throw new RuntimeException("您的账号有问题，请联系管理员后重试");
         }
         return loginTable.getEmail();
+    }
+
+    @Override
+    public String getUserPictureByUserId(Long userId) {
+        LambdaQueryWrapper<LoginTable> wrapper = new QueryWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,userId);
+        LoginTable loginTable = sysLoginMapper.selectOne(wrapper);
+        if (ObjectUtil.isNull(loginTable)){
+            return null;
+        }
+        return loginTable.getPicture();
     }
 
     private void insertUser(RegistReq req) {
