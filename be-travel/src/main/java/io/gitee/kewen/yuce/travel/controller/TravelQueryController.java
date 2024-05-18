@@ -15,10 +15,12 @@ import io.gitee.kewen.yuce.common.service.TravelPictureTableService;
 import io.gitee.kewen.yuce.common.service.TravelTableService;
 import io.gitee.kewen.yuce.travel.MinioUpload.MinioUploadService;
 import io.minio.errors.*;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,6 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/travel")
+@Validated
 public class TravelQueryController {
 
     @Resource
@@ -47,6 +50,18 @@ public class TravelQueryController {
             travelQueryResps.add(travelQueryResp);
         }
         return Result.success(travelQueryResps);
+    }
+
+    @GetMapping("/searchTravel")
+    public Result<List<TravelQueryResp>> result (@RequestParam("attName") @NotBlank(message = "搜索内容不能为空") String attName){
+        List<TravelTable> travelQueryResps = travelTableService.getSearchResult(attName);
+        List<TravelQueryResp> travelQueryResps1 = new ArrayList<>();
+        for (TravelTable item : travelQueryResps){
+            Result<TravelUserInfoResp> travelUserInfoResp = portalClient.result(item.getUserId());
+            TravelQueryResp travelQueryResp = new TravelQueryResp(item.getId(),travelUserInfoResp.getData().getUserName(),item.getCreateTime(),item.getAttName(),item.getAttPicture(),travelUserInfoResp.getData().getUserPicture(),item.getAddress(),item.getIntroduce());
+            travelQueryResps1.add(travelQueryResp);
+        }
+        return Result.success(travelQueryResps1);
     }
 
     @GetMapping("/{id}")

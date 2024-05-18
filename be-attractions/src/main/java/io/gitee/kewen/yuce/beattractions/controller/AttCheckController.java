@@ -1,12 +1,17 @@
 package io.gitee.kewen.yuce.beattractions.controller;
 
+import io.gitee.kewen.yuce.beattractions.dto.req.AttPeopleNumberReq;
 import io.gitee.kewen.yuce.beattractions.dto.resp.AttNameResp;
+import io.gitee.kewen.yuce.beattractions.service.AttTableSingleService;
 import io.gitee.kewen.yuce.common.Util.HttpUtil;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.consts.AttNameAutoCheck;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Base64;
 
@@ -18,7 +23,11 @@ import java.util.Base64;
  */
 @RequestMapping("/check")
 @RestController
+@Validated
 public class AttCheckController {
+
+    @Resource
+    private AttTableSingleService service;
 
     @PostMapping("/getAttName")
     public Result<AttNameResp> attNameRespResult (MultipartFile file) throws Exception {
@@ -30,5 +39,11 @@ public class AttCheckController {
         String image = "image="+imageParam;
         String result = HttpUtil.post(AttNameAutoCheck.url,AttNameAutoCheck.Access_Token,image);
         return Result.success(new AttNameResp(result));
+    }
+
+    @PostMapping("/getPeopleNumber")
+    public Result<Integer> personNumberResult (@RequestBody AttPeopleNumberReq req) throws IOException, InterruptedException {
+        int forecastResult = service.forecast(req);
+        return Result.success(forecastResult);
     }
 }
