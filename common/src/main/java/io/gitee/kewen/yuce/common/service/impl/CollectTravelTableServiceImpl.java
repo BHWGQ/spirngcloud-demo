@@ -35,7 +35,7 @@ public class CollectTravelTableServiceImpl extends ServiceImpl<CollectTravelTabl
                 .eq(CollectTravelTable::getUserId,userId);
         List<CollectTravelTable> collectTravelTables = collectTravelTableMapper.selectList(wrapper);
         if (CollectionUtil.isEmpty(collectTravelTables)){
-            throw new RuntimeException("该用户暂无收藏的游记");
+            return null;
         }
         return collectTravelTables;
     }

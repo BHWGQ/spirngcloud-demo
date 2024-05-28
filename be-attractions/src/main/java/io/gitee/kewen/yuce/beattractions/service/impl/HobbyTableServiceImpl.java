@@ -41,7 +41,7 @@ public class HobbyTableServiceImpl extends ServiceImpl<HobbyTableMapper, HobbyTa
                 .eq(HobbyTable::getUserId,userId);
         List<HobbyTable> hobbyTables = hobbyTableMapper.selectList(wrapper);
         if (CollectionUtil.isEmpty(hobbyTables)){
-            throw new RuntimeException("该用户暂时没有喜欢的任何景点信息");
+            return null;
         }
         List<AttTableSingle> attTableSingles = new ArrayList<>();
         for (HobbyTable item : hobbyTables){

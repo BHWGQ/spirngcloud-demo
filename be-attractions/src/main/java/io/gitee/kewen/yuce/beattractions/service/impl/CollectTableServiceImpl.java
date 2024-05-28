@@ -40,7 +40,7 @@ public class CollectTableServiceImpl extends ServiceImpl<CollectTableMapper, Col
                 .eq(CollectTable::getUserId,userId);
         List<CollectTable> collectTables = collectTableMapper.selectList(wrapper);
         if (CollectionUtil.isEmpty(collectTables)){
-            throw new RuntimeException("该用户暂时没有收藏任何景点信息");
+            return null;
         }
         List<AttTableSingle> attTableSingles = new ArrayList<>();
         for (CollectTable item : collectTables){

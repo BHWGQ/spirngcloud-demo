@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.beattractions.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import io.gitee.kewen.yuce.beattractions.dto.req.AttCollectHobbyInsertReq;
 import io.gitee.kewen.yuce.beattractions.dto.resp.AttCollectHobbyResp;
 import io.gitee.kewen.yuce.beattractions.dto.resp.AttHomePageQueryResp;
@@ -40,6 +41,9 @@ public class AttCollectHobbyController {
     @GetMapping("/collectQuery")
      public Result<List<AttHomePageQueryResp>> attCollectList (@RequestParam("userId") Long userId){
         List<AttTableSingle> attTableSingles = collectTableService.selectByUserId(userId);
+        if (CollectionUtil.isEmpty(attTableSingles)){
+            return Result.success(null);
+        }
         List<AttHomePageQueryResp> attHomePageQueryResps = new ArrayList<>();
         for (AttTableSingle item : attTableSingles){
             String picture = attPictureService.getByAttId(item.getId());
@@ -52,6 +56,9 @@ public class AttCollectHobbyController {
     @GetMapping("/hobbyQuery")
     public Result<List<AttHomePageQueryResp>> hobbyCollectList (@RequestParam("userId") Long userId){
         List<AttTableSingle> attTableSingles = hobbyTableService.selectByUserId(userId);
+        if (CollectionUtil.isEmpty(attTableSingles)){
+            return Result.success(null);
+        }
         List<AttHomePageQueryResp> attHomePageQueryResps = new ArrayList<>();
         for (AttTableSingle item : attTableSingles){
             String picture = attPictureService.getByAttId(item.getId());

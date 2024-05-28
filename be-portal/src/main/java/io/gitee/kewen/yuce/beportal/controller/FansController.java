@@ -3,14 +3,12 @@ package io.gitee.kewen.yuce.beportal.controller;
 import cn.hutool.core.collection.CollectionUtil;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
+import io.gitee.kewen.yuce.common.model.dto.req.UserSubscribeInsertReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.UserSubscribeResp;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.model.entity.FansTable;
 import io.gitee.kewen.yuce.common.service.FansTableService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -75,5 +73,20 @@ public class FansController {
         return Result.success(userSubscribeResps);
     }
 
+    //新建关注
+    @PostMapping("/insertSubscribe")
+    public Result<Boolean> userSubscribeInsert (@RequestBody UserSubscribeInsertReq req){
+        boolean result = service.userSubscribeInsert(req);
+        return Result.success(result);
+    }
+
+
+
+    //取消关注
+    @PostMapping("/deleteSubscribe")
+    public Result<Boolean> userSubscribeDelete (@RequestBody UserSubscribeInsertReq req){
+        boolean result = service.userSubscribeDelete(req);
+        return Result.success(result);
+    }
 
 }

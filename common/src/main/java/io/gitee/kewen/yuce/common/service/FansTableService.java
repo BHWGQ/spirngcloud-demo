@@ -1,6 +1,7 @@
 package io.gitee.kewen.yuce.common.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.kewen.yuce.common.model.dto.req.UserSubscribeInsertReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.UserSubscribeResp;
 import io.gitee.kewen.yuce.common.model.entity.FansTable;
 
@@ -21,5 +22,9 @@ public interface FansTableService extends IService<FansTable> {
     List<FansTable> userSubscribeQuery(Long userId);
 
     List<FansTable> userFansQuery(Long userId);
+
+    boolean userSubscribeInsert(UserSubscribeInsertReq req);
+
+    boolean userSubscribeDelete(UserSubscribeInsertReq req);
 }
 

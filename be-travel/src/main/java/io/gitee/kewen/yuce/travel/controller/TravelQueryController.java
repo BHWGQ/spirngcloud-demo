@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.travel.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.exception.TravelException.TravelException;
@@ -87,6 +88,9 @@ public class TravelQueryController {
     @GetMapping("/myTravel")
     public Result<List<TravelQueryResp>> userTravel (@RequestParam("userId") Long userId){
         List<TravelTable> travelTables = travelTableService.selectListByUserId(userId);
+        if (CollectionUtil.isEmpty(travelTables)){
+            return Result.success(null);
+        }
         Result<TravelUserInfoResp> travelUserInfoRespResult = portalClient.result(userId);
         List<TravelQueryResp> resps = new ArrayList<>();
         for (TravelTable item : travelTables){

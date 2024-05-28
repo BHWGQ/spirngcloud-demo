@@ -1,14 +1,18 @@
 package io.gitee.kewen.yuce.common.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.exception.PortalException.PortalException;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
 import io.gitee.kewen.yuce.common.mapper.FansTableMapper;
 import io.gitee.kewen.yuce.common.mapper.SysLoginMapper;
+import io.gitee.kewen.yuce.common.model.dto.req.UserSubscribeInsertReq;
 import io.gitee.kewen.yuce.common.model.dto.resp.UserSubscribeResp;
 import io.gitee.kewen.yuce.common.model.entity.FansTable;
 import io.gitee.kewen.yuce.common.model.entity.LoginTable;
@@ -64,6 +68,42 @@ public class FansTableServiceImpl extends ServiceImpl<FansTableMapper, FansTable
             return null;
         }
         return fansTables;
+    }
+
+    @Override
+    public boolean userSubscribeInsert(UserSubscribeInsertReq req) {
+        LambdaQueryWrapper<FansTable> lambdaQueryWrapper = new QueryWrapper<FansTable>().lambda()
+                .eq(FansTable::getFansId,req.getFansId())
+                .eq(FansTable::getUserId,req.getUserId());
+        FansTable fansTable = mapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtil.isNotNull(fansTable)){
+            throw PortalException.Subscribe_Exist;
+        }
+        FansTable fansTable1 = FansTable.builder()
+                .fansId(req.getFansId())
+                .userId(req.getUserId())
+                .build();
+        int affectRow = mapper.insert(fansTable1);
+        if (affectRow > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean userSubscribeDelete(UserSubscribeInsertReq req) {
+        LambdaQueryWrapper<FansTable> lambdaQueryWrapper = new QueryWrapper<FansTable>().lambda()
+                .eq(FansTable::getFansId,req.getFansId())
+                .eq(FansTable::getUserId,req.getUserId());
+        FansTable fansTable = mapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtil.isNull(fansTable)){
+            throw PortalException.Subscribe_Not_Exist;
+        }
+        int affect = mapper.delete(lambdaQueryWrapper);
+        if (affect > 0){
+            return true;
+        }
+        return false;
     }
 }
 

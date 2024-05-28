@@ -93,6 +93,9 @@ public class CommentQueryControlller {
         List<TravelOneResp> resps = travelCommentService.queryByUserId(userId);
         Result<TravelUserInfoResp> travelQueryResps = portalClient.result(userId);
         List<TravelQueryResp> resps1 = new ArrayList<>();
+        if (CollectionUtil.isEmpty(resps)){
+            return Result.success(new UserAnswerResp(att_users,hotelRecommendThreeResps,foodRecommendThreeResps,resps1));
+        }
         for (TravelOneResp item : resps){
             TravelQueryResp resp = new TravelQueryResp(item.getId(),travelQueryResps.getData().getUserName(),item.getCreateTime(),item.getAttName(),item.getAttPicture(),travelQueryResps.getData().getUserPicture(),item.getAddress(),item.getIntroduce());
             resps1.add(resp);

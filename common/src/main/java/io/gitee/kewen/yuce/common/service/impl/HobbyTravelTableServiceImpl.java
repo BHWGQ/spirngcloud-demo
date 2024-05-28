@@ -34,7 +34,7 @@ public class HobbyTravelTableServiceImpl extends ServiceImpl<HobbyTravelTableMap
                 .eq(HobbyTravelTable::getUserId,userId);
         List<HobbyTravelTable> hobbyTravelTables = hobbyTravelTableMapper.selectList(wrapper);
         if (CollectionUtil.isEmpty(hobbyTravelTables)){
-            throw new RuntimeException("该用户暂无喜欢的游记");
+            return null;
         }
         return hobbyTravelTables;
     }

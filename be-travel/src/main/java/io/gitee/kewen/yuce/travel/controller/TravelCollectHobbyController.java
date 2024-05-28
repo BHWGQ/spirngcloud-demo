@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.travel.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.feign.PortalClient;
 import io.gitee.kewen.yuce.common.mapper.TravelTableMapper;
@@ -47,6 +48,9 @@ public class TravelCollectHobbyController {
     @GetMapping("/collectQuery")
     public Result<List<TravelQueryResp>> travelCollectQuery(@RequestParam("userId") Long userId){
         List<CollectTravelTable> collectTravelTables = collectTravelTableService.getByUserId(userId);
+        if (CollectionUtil.isEmpty(collectTravelTables)){
+            return Result.success(null);
+        }
         List<TravelTenInfoResp> travelTenInfoResps = new ArrayList<>();
         for (CollectTravelTable item : collectTravelTables){
             TravelTenInfoResp travelTenInfoResp = travelTableMapper.selectByTravelId(item.getTravelId());
@@ -64,6 +68,9 @@ public class TravelCollectHobbyController {
     @GetMapping("/hobbyQuery")
     public Result<List<TravelQueryResp>> travelHobbyQuery(@RequestParam("userId") Long userId){
         List<HobbyTravelTable> hobbyTravelTables = hobbyTravelTableService.getByUserId(userId);
+        if (CollectionUtil.isEmpty(hobbyTravelTables)){
+            return Result.success(null);
+        }
         List<TravelTenInfoResp> travelTenInfoResps = new ArrayList<>();
         for (HobbyTravelTable item : hobbyTravelTables){
             TravelTenInfoResp travelTenInfoResp = travelTableMapper.selectByTravelId(item.getTravelId());
