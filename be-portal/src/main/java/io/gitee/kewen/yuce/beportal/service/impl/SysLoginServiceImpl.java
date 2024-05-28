@@ -1,5 +1,6 @@
 package io.gitee.kewen.yuce.beportal.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -22,10 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -181,6 +179,27 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
             return null;
         }
         return loginTable.getPicture();
+    }
+
+    @Override
+    public List<UserInfoResp> userInfoQuery(String userName) {
+        LambdaQueryWrapper<LoginTable> lambdaQueryWrapper = new QueryWrapper<LoginTable>().lambda()
+                .like(LoginTable::getUserName,userName);
+        List<LoginTable> loginTables = sysLoginMapper.selectList(lambdaQueryWrapper);
+        if (CollectionUtil.isEmpty(loginTables)){
+            throw new RuntimeException("查无此用户");
+        }
+        List<UserInfoResp> userInfoResps = new ArrayList<>();
+        for(LoginTable item : loginTables){
+            UserInfoResp userInfoResp = UserInfoResp.builder()
+                    .userId(item.getUserId())
+                    .userName(item.getUserName())
+                    .email(item.getEmail())
+                    .picture(item.getPicture())
+                    .signature(item.getSignature()).build();
+            userInfoResps.add(userInfoResp);
+        }
+        return userInfoResps;
     }
 
     private void insertUser(RegistReq req) {

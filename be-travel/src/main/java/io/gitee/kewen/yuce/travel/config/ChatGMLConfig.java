@@ -18,7 +18,7 @@ public class ChatGMLConfig {
     public OpenAiSession chatgml() {
         // 1.配置文件
         cn.zrgzs.chatglm.session.Configuration configuration = new cn.zrgzs.chatglm.session.Configuration();
-        configuration.setApiSecretKey("68375301b74f994526733a8eb80c7aa5.e8r9DFyFg2PD6cD9");
+        configuration.setApiSecretKey("88c0bab92778f6d417969bff64923825.z1QppF9IWzxiWAUZ");
 
         // 2.会话工厂
         DefaultOpenAiSessionFactory defaultOpenAiSessionFactory = new DefaultOpenAiSessionFactory(configuration);

@@ -303,6 +303,40 @@
             </TableInfoDTO>
           </value>
         </entry>
+        <entry key="travel-plan.fans_table">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="userid" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="fansid" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="FansTable" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="be-travel" />
+              <option name="savePackageName" value="io.gitee.kewen.yuce.common.redis" />
+              <option name="savePath" value="./be-travel/src/main/java/io/gitee/kewen/yuce/common/redis" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
         <entry key="travel-plan.hobby_table">
           <value>
             <TableInfoDTO>
