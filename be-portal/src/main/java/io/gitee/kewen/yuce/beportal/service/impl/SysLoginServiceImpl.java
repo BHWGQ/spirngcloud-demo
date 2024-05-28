@@ -17,6 +17,7 @@ import io.gitee.kewen.yuce.beportal.exception.RegistException;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
 import io.gitee.kewen.yuce.common.jwt.JwtUtil;
 import io.gitee.kewen.yuce.common.mapper.SysLoginMapper;
+import io.gitee.kewen.yuce.common.model.dto.resp.UserSubscribeResp;
 import io.gitee.kewen.yuce.common.model.entity.LoginTable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -200,6 +201,19 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
             userInfoResps.add(userInfoResp);
         }
         return userInfoResps;
+    }
+
+    @Override
+    public UserSubscribeResp getUserSub(Long userId) {
+        LambdaQueryWrapper<LoginTable> lambdaQueryWrapper = new QueryWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,userId);
+        LoginTable loginTable = sysLoginMapper.selectOne(lambdaQueryWrapper);
+        UserSubscribeResp userSubscribeResp = UserSubscribeResp.builder()
+                .userId(loginTable.getUserId())
+                .userName(loginTable.getUserName())
+                .picture(loginTable.getPicture())
+                .signature(loginTable.getSignature()).build();
+        return userSubscribeResp;
     }
 
     private void insertUser(RegistReq req) {

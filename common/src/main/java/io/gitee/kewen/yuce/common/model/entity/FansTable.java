@@ -35,7 +35,7 @@ public class FansTable implements Serializable {
     @TableField("user_id")
     private Long userId;
 
-    @TableField("fansId")
+    @TableField("fans_id")
     private Long fansId;
 
 

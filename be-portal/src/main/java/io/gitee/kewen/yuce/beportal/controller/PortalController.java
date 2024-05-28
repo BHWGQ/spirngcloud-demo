@@ -9,6 +9,7 @@ import io.gitee.kewen.yuce.beportal.service.SysLoginService;
 import io.gitee.kewen.yuce.beportal.MinioUpload.MinioUploadService;
 import io.gitee.kewen.yuce.common.bean.Result;
 import io.gitee.kewen.yuce.common.model.dto.resp.TravelUserInfoResp;
+import io.gitee.kewen.yuce.common.model.dto.resp.UserSubscribeResp;
 import io.gitee.kewen.yuce.common.model.entity.LoginTable;
 import io.minio.errors.*;
 import org.springframework.web.bind.annotation.*;
@@ -85,6 +86,13 @@ public class PortalController {
     public Result<String> getUserPicture (@RequestParam("userId") Long userId){
         String userPicture = service.getUserPictureByUserId(userId);
         return Result.success(userPicture);
+    }
+
+    //根据用户id查询关注用户
+    @GetMapping("/getUserSub")
+    public Result<UserSubscribeResp> userSubscribeRespResult (@RequestParam("userId") Long userId){
+        UserSubscribeResp userSubscribeResp = service.getUserSub(userId);
+        return Result.success(userSubscribeResp);
     }
 
 }
