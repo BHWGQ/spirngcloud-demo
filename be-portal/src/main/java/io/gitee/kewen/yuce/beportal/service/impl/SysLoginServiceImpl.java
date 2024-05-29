@@ -19,6 +19,7 @@ import io.gitee.kewen.yuce.common.jwt.JwtUtil;
 import io.gitee.kewen.yuce.common.mapper.SysLoginMapper;
 import io.gitee.kewen.yuce.common.model.dto.resp.UserSubscribeResp;
 import io.gitee.kewen.yuce.common.model.entity.LoginTable;
+import org.apache.tomcat.jni.User;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -214,6 +215,24 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
                 .picture(loginTable.getPicture())
                 .signature(loginTable.getSignature()).build();
         return userSubscribeResp;
+    }
+
+    @Override
+    public UserInfoResp userInfoQueryByUserId(Long userId) {
+        LambdaQueryWrapper<LoginTable> lambdaQueryWrapper = new QueryWrapper<LoginTable>().lambda()
+                .eq(LoginTable::getUserId,userId);
+        LoginTable loginTable = sysLoginMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtil.isNull(loginTable)){
+            throw new RuntimeException("未查到该用户");
+        }
+        UserInfoResp userInfoResp = UserInfoResp.builder()
+                .userId(userId)
+                .userName(loginTable.getUserName())
+                .signature(loginTable.getSignature())
+                .picture(loginTable.getPicture())
+                .email(loginTable.getEmail())
+                .build();
+        return userInfoResp;
     }
 
     private void insertUser(RegistReq req) {

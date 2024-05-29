@@ -105,5 +105,19 @@ public class FansTableServiceImpl extends ServiceImpl<FansTableMapper, FansTable
         }
         return false;
     }
+
+    @Override
+    public boolean getUserStatus(UserSubscribeInsertReq req) {
+        //当前用户userId对查看用户的状态
+        //当前用户不需要关注查看用户是否关注自己，而是查看自己是否关注了查看用户
+        LambdaQueryWrapper<FansTable> fansTableLambdaQueryWrapper = new QueryWrapper<FansTable>().lambda()
+                .eq(FansTable::getFansId,req.getFansId())
+                .eq(FansTable::getUserId,req.getUserId());
+        FansTable fansTable = mapper.selectOne(fansTableLambdaQueryWrapper);
+        if (ObjectUtil.isNull(fansTable)){
+            return false;
+        }
+        return true;
+    }
 }
 

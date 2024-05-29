@@ -30,4 +30,10 @@ public class UserInfoController {
         List<UserInfoResp> userInfoResps = service.userInfoQuery(userName);
         return Result.success(userInfoResps);
     }
+
+    @GetMapping("/getUserInfoByUserId")
+    public Result<UserInfoResp> userInfoQueryByUserId (@RequestParam("userId") Long userId){
+        UserInfoResp userInfoResp = service.userInfoQueryByUserId(userId);
+        return Result.success(userInfoResp);
+    }
 }

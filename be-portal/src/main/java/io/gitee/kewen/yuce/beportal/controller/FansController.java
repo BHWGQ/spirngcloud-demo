@@ -80,12 +80,17 @@ public class FansController {
         return Result.success(result);
     }
 
-
-
     //取消关注
     @PostMapping("/deleteSubscribe")
     public Result<Boolean> userSubscribeDelete (@RequestBody UserSubscribeInsertReq req){
         boolean result = service.userSubscribeDelete(req);
+        return Result.success(result);
+    }
+
+    //查看当前用户对搜索用户的关注状态
+    @PostMapping("/checkUserSubStatus")
+    public Result<Boolean> checkUserSubStatus(@RequestBody UserSubscribeInsertReq req){
+        boolean result = service.getUserStatus(req);
         return Result.success(result);
     }
 

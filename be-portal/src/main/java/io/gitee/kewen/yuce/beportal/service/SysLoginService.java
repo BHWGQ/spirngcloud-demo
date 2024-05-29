@@ -31,4 +31,6 @@ public interface SysLoginService extends IService<LoginTable> {
     List<UserInfoResp> userInfoQuery(String userName);
 
     UserSubscribeResp getUserSub(Long userId);
+
+    UserInfoResp userInfoQueryByUserId(Long userId);
 }

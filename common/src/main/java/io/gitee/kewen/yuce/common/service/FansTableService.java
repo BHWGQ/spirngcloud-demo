@@ -26,5 +26,7 @@ public interface FansTableService extends IService<FansTable> {
     boolean userSubscribeInsert(UserSubscribeInsertReq req);
 
     boolean userSubscribeDelete(UserSubscribeInsertReq req);
+
+    boolean getUserStatus(UserSubscribeInsertReq req);
 }
 
