@@ -33,4 +33,6 @@ public interface SysLoginService extends IService<LoginTable> {
     UserSubscribeResp getUserSub(Long userId);
 
     UserInfoResp userInfoQueryByUserId(Long userId);
+
+    boolean loginOut(String token);
 }

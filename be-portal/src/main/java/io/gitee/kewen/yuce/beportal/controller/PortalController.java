@@ -1,9 +1,6 @@
 package io.gitee.kewen.yuce.beportal.controller;
 
-import io.gitee.kewen.yuce.beportal.dto.req.RegistReq;
-import io.gitee.kewen.yuce.beportal.dto.req.SysLoginReq;
-import io.gitee.kewen.yuce.beportal.dto.req.UpdatePictureReq;
-import io.gitee.kewen.yuce.beportal.dto.req.UpdateUserInfoReq;
+import io.gitee.kewen.yuce.beportal.dto.req.*;
 import io.gitee.kewen.yuce.beportal.dto.resp.*;
 import io.gitee.kewen.yuce.beportal.service.SysLoginService;
 import io.gitee.kewen.yuce.beportal.MinioUpload.MinioUploadService;
@@ -69,9 +66,11 @@ public class PortalController {
         if (!updateUserInfo){
             return Result.fail(null);
         }
-        String deleteUrl = minioUploadService.deletePicture(oldPicture);
-        if (!"删除成功".equals(deleteUrl)){
-            return Result.fail(null);
+        if (!"http://117.72.41.45:9000/user-info/卡卡罗特.jpg".equals(oldPicture)){
+            String deleteUrl = minioUploadService.deletePicture(oldPicture);
+            if (!"删除成功".equals(deleteUrl)){
+                return Result.fail(null);
+            }
         }
         return Result.success(new UpdateUserPicture(pictureUrl));
     }
@@ -93,6 +92,12 @@ public class PortalController {
     public Result<UserSubscribeResp> userSubscribeRespResult (@RequestParam("userId") Long userId){
         UserSubscribeResp userSubscribeResp = service.getUserSub(userId);
         return Result.success(userSubscribeResp);
+    }
+
+    @PostMapping("/loginOut")
+    public Result<Boolean> userLoginOut (@RequestBody LoginOutReq req){
+        boolean result = service.loginOut(req.getToken());
+        return Result.success(result);
     }
 
 }

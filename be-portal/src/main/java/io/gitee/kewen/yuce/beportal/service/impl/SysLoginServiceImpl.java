@@ -235,9 +235,15 @@ public class SysLoginServiceImpl extends ServiceImpl<SysLoginMapper, LoginTable>
         return userInfoResp;
     }
 
+    @Override
+    public boolean loginOut(String token) {
+        Boolean result = stringRedisTemplate.delete("login:" + token);
+        return result;
+    }
+
     private void insertUser(RegistReq req) {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        String picture = "http://s9tnzuteo.hd-bkt.clouddn.com/travel-plan-person-picture/base.png";
+        String picture = "http://117.72.41.45:9000/user-info/卡卡罗特.jpg";
         String signature = "这家伙很懒，啥都不想说";
         LoginTable rolerNull = new LoginTable(req.getUserId(),req.getUserName(),req.getPassword(),req.getPhoneNumber(),req.getRoler(),0,currentDateTime,signature,picture,req.getEmail());
         int rowsAffected = sysLoginMapper.insert(rolerNull);
