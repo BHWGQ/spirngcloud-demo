@@ -14,5 +14,5 @@ public class AttNameAutoCheck {
 
     public static final String url = "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general";
 
-    public static final String Access_Token = "24.74ed9e64ea81db4c2c3c1d26d80a7354.2592000.1719384096.282335-75374583";
+    public static final String Access_Token = "24.9490f2a078df3b780c29bc9444937e63.2592000.1726643931.282335-108093809";
 }
